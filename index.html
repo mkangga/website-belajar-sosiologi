@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sosiologi Interaktif Kelas 10</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Harmoni Belajar -->
+    <!-- Application Structure Plan: Saya merancang SPA ini dengan struktur modular berbasis dashboard. Navigasi utama yang jelas di bagian atas memungkinkan siswa untuk melompat ke modul mana pun (Interaksi, Nilai & Norma, dll.) tanpa harus menggulir secara linear. Struktur ini dipilih untuk memecah materi yang padat menjadi bagian-bagian yang mudah dicerna, sesuai dengan cara belajar digital native. Setiap modul disajikan sebagai 'halaman' dinamis yang menampilkan konten melalui komponen interaktif seperti kartu, tab, dan diagram visual untuk menggantikan paragraf panjang. Alur pengguna dimulai dari sambutan, memilih modul, berinteraksi dengan konten yang disajikan secara visual, lalu bebas berpindah ke modul lain. Tujuannya adalah mengubah pembelajaran pasif (membaca) menjadi eksplorasi aktif untuk meningkatkan keterlibatan dan pemahaman siswa. -->
+    <!-- Visualization & Content Choices: Untuk menerjemahkan materi Sosiologi, saya memilih visualisasi yang sesuai dengan tujuan pedagogisnya. (1) Interaksi Sosial: Diagram HTML/CSS interaktif digunakan untuk memvisualisasikan konsep abstrak 'Asosiatif vs Disosiatif'. (2) Nilai & Norma: Diagram Piramida HTML/CSS yang interaktif dipilih untuk merepresentasikan 'Tingkatan Norma' karena secara intuitif menunjukkan hierarki dan kekuatan ikatan dari 'Cara' hingga 'Hukum'. Sebuah chart donat dari Chart.js memvisualisasikan metode 'Pengendalian Sosial' untuk perbandingan proporsi yang mudah dipahami. (3) Struktur Sosial: Perbandingan 'Diferensiasi vs Stratifikasi' disajikan dalam tabel berdampingan untuk kejelasan maksimal. (4) Perubahan Sosial: Chart garis dari Chart.js dipakai untuk menggambarkan perbedaan drastis antara 'Evolusi' (garis landai) dan 'Revolusi' (garis curam), yang jauh lebih efektif daripada teks. Semua pilihan ini dibuat untuk menyederhanakan konsep kompleks, meningkatkan keterlibatan, dan sepenuhnya menghindari penggunaan SVG atau Mermaid.js. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F8F5F2;
+            color: #4A4A4A;
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-button:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #E57373;
+            transition: width 0.3s ease;
+        }
+        .nav-button.active:after, .nav-button:hover:after {
+            width: 100%;
+        }
+        .nav-button.active {
+            color: #D32F2F;
+            font-weight: 600;
+        }
+        .content-card {
+            background-color: #FFFFFF;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .module-section {
+            display: none;
+            animation: fadeIn 0.8s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 py-3">
+            <div class="flex flex-wrap justify-center items-center gap-4 md:gap-8">
+                <button class="nav-button text-sm md:text-base" data-target="modul1">Interaksi Sosial</button>
+                <button class="nav-button text-sm md:text-base" data-target="modul2">Nilai & Norma</button>
+                <button class="nav-button text-sm md:text-base" data-target="modul3">Struktur Sosial</button>
+                <button class="nav-button text-sm md:text-base" data-target="modul4">Perubahan Sosial</button>
+                <button class="nav-button text-sm md:text-base" data-target="modul5">Multikultural</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+        <div id="welcome" class="text-center py-16 px-4">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Sosiologi Itu Seru!</h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">Selamat datang di petualangan Sosiologi Kelas 10! Pilih modul di atas untuk mulai menjelajahi dunia masyarakat yang penuh warna.</p>
+        </div>
+
+        <section id="modul1" class="module-section space-y-12">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-gray-800">Modul 1: Asyiknya Berinteraksi Sosial!</h2>
+                <p class="mt-2 text-gray-600 max-w-2xl mx-auto">Pernah nggak sih kamu kepikiran, kenapa kita butuh ngobrol sama teman? Di modul ini, kita bakal kupas tuntas soal interaksi sosial, mulai dari artinya, kenapa penting, syaratnya apa aja, sampai bentuk-bentuknya yang kadang bikin akur, kadang bikin tegang!</p>
+            </div>
+
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Faktor Pendorong Interaksi Sosial</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="p-4 bg-rose-50 rounded-lg">
+                        <h4 class="font-semibold text-rose-800">Imitasi</h4>
+                        <p class="text-sm text-rose-700">Tindakan meniru orang lain, mulai dari gaya bicara sampai penampilan.</p>
+                    </div>
+                    <div class="p-4 bg-sky-50 rounded-lg">
+                        <h4 class="font-semibold text-sky-800">Sugesti</h4>
+                        <p class="text-sm text-sky-700">Terpengaruh oleh pandangan orang lain yang kita anggap hebat atau berwibawa.</p>
+                    </div>
+                    <div class="p-4 bg-emerald-50 rounded-lg">
+                        <h4 class="font-semibold text-emerald-800">Identifikasi</h4>
+                        <p class="text-sm text-emerald-700">Keinginan kuat untuk menjadi sama persis dengan idola atau role model.</p>
+                    </div>
+                    <div class="p-4 bg-amber-50 rounded-lg">
+                        <h4 class="font-semibold text-amber-800">Simpati</h4>
+                        <p class="text-sm text-amber-700">Ikut merasakan perasaan orang lain (biasanya kesedihan) dan peduli.</p>
+                    </div>
+                     <div class="p-4 bg-violet-50 rounded-lg">
+                        <h4 class="font-semibold text-violet-800">Empati</h4>
+                        <p class="text-sm text-violet-700">Lebih dalam dari simpati, kita seolah-olah mengalami sendiri apa yang dirasakan orang lain.</p>
+                    </div>
+                     <div class="p-4 bg-gray-100 rounded-lg">
+                        <h4 class="font-semibold text-gray-800">Motivasi</h4>
+                        <p class="text-sm text-gray-700">Dorongan dari dalam atau luar diri untuk melakukan sesuatu, termasuk berinteraksi.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-card p-6">
+                 <h3 class="font-bold text-xl mb-4 text-center">Bentuk-Bentuk Interaksi Sosial</h3>
+                 <p class="text-center text-gray-600 mb-6">Interaksi sosial bisa menyatukan (Asosiatif) atau memisahkan (Disosiatif). Keduanya adalah bagian dari dinamika kehidupan bermasyarakat.</p>
+                 <div class="grid md:grid-cols-2 gap-8">
+                     <div class="space-y-4">
+                         <h4 class="text-lg font-semibold text-center text-green-700">🤝 Asosiatif (Menyatukan)</h4>
+                         <div class="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                            <h5 class="font-bold">Kerja Sama</h5>
+                            <p class="text-sm">Usaha bareng-bareng buat mencapai tujuan bersama. Contoh: Piket kelas.</p>
+                         </div>
+                          <div class="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                            <h5 class="font-bold">Akomodasi</h5>
+                            <p class="text-sm">Upaya meredakan konflik agar tercapai kestabilan. Contoh: Guru menengahi siswa yang bertengkar.</p>
+                         </div>
+                         <div class="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                            <h5 class="font-bold">Akulturasi & Asimilasi</h5>
+                            <p class="text-sm">Proses peleburan budaya. Akulturasi: budaya asli tetap ada. Asimilasi: lahir budaya baru.</p>
+                         </div>
+                     </div>
+                     <div class="space-y-4">
+                         <h4 class="text-lg font-semibold text-center text-red-700">⚔️ Disosiatif (Memisahkan)</h4>
+                          <div class="p-4 bg-red-50 rounded-lg border-l-4 border-red-500">
+                            <h5 class="font-bold">Persaingan</h5>
+                            <p class="text-sm">Lomba meraih sesuatu yang terbatas secara sportif. Contoh: Lomba cerdas cermat.</p>
+                         </div>
+                          <div class="p-4 bg-red-50 rounded-lg border-l-4 border-red-500">
+                            <h5 class="font-bold">Kontravensi</h5>
+                            <p class="text-sm">Sikap tidak suka yang tersembunyi, di antara persaingan dan konflik. Contoh: Menyebar gosip.</p>
+                         </div>
+                          <div class="p-4 bg-red-50 rounded-lg border-l-4 border-red-500">
+                            <h5 class="font-bold">Konflik</h5>
+                            <p class="text-sm">Upaya menjatuhkan lawan dengan cara kekerasan atau ancaman. Contoh: Tawuran.</p>
+                         </div>
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="modul2" class="module-section space-y-12">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-gray-800">Modul 2: Nilai dan Norma</h2>
+                <p class="mt-2 text-gray-600 max-w-2xl mx-auto">Seperti main game, hidup di masyarakat juga punya aturan main. Aturan tak tertulis ini kita sebut nilai dan norma. Yuk, kita bedah apa saja aturannya biar hidup kita nyaman dan teratur!</p>
+            </div>
+
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Tingkatan Norma Berdasarkan Daya Ikatnya</h3>
+                <p class="text-center text-gray-600 mb-6">Norma punya kekuatan mengikat yang berbeda-beda. Semakin ke bawah, semakin kuat ikatannya dan semakin berat sanksinya. Klik tiap tingkatan untuk detailnya.</p>
+                <div class="space-y-2 max-w-lg mx-auto" id="norma-pyramid">
+                    <div class="pyramid-level bg-teal-100 text-teal-800 p-3 rounded-lg text-center cursor-pointer" data-info="Paling lemah. Sanksinya cuma dianggap aneh. Contoh: Cara makan berbunyi.">
+                        <h4 class="font-bold">Cara (Usage)</h4>
+                    </div>
+                    <div class="pyramid-level bg-teal-200 text-teal-800 p-3 rounded-lg text-center cursor-pointer" data-info="Lebih kuat. Perbuatan yang diulang-ulang. Sanksinya teguran atau dianggap tidak sopan. Contoh: Memberi salam.">
+                        <h4 class="font-bold">Kebiasaan (Folkways)</h4>
+                    </div>
+                    <div class="pyramid-level bg-teal-300 text-teal-800 p-3 rounded-lg text-center cursor-pointer" data-info="Kuat. Berkaitan dengan moral. Sanksinya bisa dikucilkan. Contoh: Larangan mencuri.">
+                        <h4 class="font-bold">Tata Kelakuan (Mores)</h4>
+                    </div>
+                    <div class="pyramid-level bg-teal-400 text-teal-800 p-3 rounded-lg text-center cursor-pointer" data-info="Sangat kuat, diwariskan turun-temurun. Sanksi adat bisa sangat berat. Contoh: Aturan upacara pernikahan adat.">
+                        <h4 class="font-bold">Adat Istiadat (Custom)</h4>
+                    </div>
+                    <div class="pyramid-level bg-teal-500 text-white p-3 rounded-lg text-center cursor-pointer" data-info="Paling kuat dan memaksa. Aturan tertulis dari negara. Sanksinya denda atau penjara. Contoh: Wajib membayar pajak.">
+                        <h4 class="font-bold">Hukum (Laws)</h4>
+                    </div>
+                </div>
+                <div id="norma-info" class="mt-4 p-4 bg-gray-100 rounded-lg text-center text-gray-700 transition-opacity duration-300 opacity-0">Pilih salah satu tingkatan di atas.</div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="content-card p-6">
+                     <h3 class="font-bold text-xl mb-4">Penyebab Perilaku Menyimpang</h3>
+                     <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><b>Sosialisasi tidak sempurna:</b> Proses belajar nilai dan norma tidak berjalan baik.</li>
+                        <li><b>Sub-kebudayaan menyimpang:</b> Aturan kelompoknya beda dari masyarakat umum.</li>
+                        <li><b>Teori Labeling:</b> Seseorang jadi menyimpang karena sudah terlanjur dicap negatif oleh masyarakat.</li>
+                        <li><b>Teori Anomi:</b> Bingung karena ada jurang antara tujuan hidup (misal: kaya) dan cara mencapainya.</li>
+                     </ul>
+                </div>
+                 <div class="content-card p-6">
+                    <h3 class="font-bold text-xl mb-4 text-center">Metode Pengendalian Sosial</h3>
+                     <div class="chart-container">
+                        <canvas id="socialControlChart"></canvas>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="modul3" class="module-section space-y-12">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-gray-800">Modul 3: Struktur Sosial</h2>
+                <p class="mt-2 text-gray-600 max-w-2xl mx-auto">Di masyarakat, kita punya posisi dan peran masing-masing. Ada yang setara, ada yang bertingkat. Yuk, pahami 'peta' masyarakat ini biar tahu posisi kita di mana!</p>
+            </div>
+
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Diferensiasi vs. Stratifikasi Sosial</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="p-4 bg-blue-50 rounded-lg">
+                        <h4 class="text-lg font-semibold text-blue-800 text-center">Diferensiasi (Horizontal)</h4>
+                        <p class="text-sm text-center text-blue-700 mb-4">Pengelompokan yang sifatnya setara, tidak ada yang lebih tinggi atau rendah.</p>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li><b>Dasar:</b> Ras, Suku, Agama, Jenis Kelamin, Profesi.</li>
+                            <li><b>Sifat:</b> Sejajar / Horizontal.</li>
+                            <li><b>Contoh:</b> Beragamnya suku Batak, Jawa, Sunda di Indonesia.</li>
+                        </ul>
+                    </div>
+                     <div class="p-4 bg-purple-50 rounded-lg">
+                        <h4 class="text-lg font-semibold text-purple-800 text-center">Stratifikasi (Vertikal)</h4>
+                        <p class="text-sm text-center text-purple-700 mb-4">Pengelompokan yang sifatnya bertingkat, ada lapisan atas dan bawah.</p>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li><b>Dasar:</b> Kekayaan, Kekuasaan, Pendidikan, Kehormatan.</li>
+                            <li><b>Sifat:</b> Bertingkat / Vertikal.</li>
+                            <li><b>Contoh:</b> Kelas ekonomi masyarakat (kaya, menengah, miskin).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+             <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Bagaimana Kamu Mendapat Status?</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                    <div class="p-4">
+                        <div class="text-4xl mb-2">🎁</div>
+                        <h4 class="font-bold">Ascribed Status</h4>
+                        <p class="text-sm">Status yang didapat sejak lahir tanpa usaha. <br><b>Contoh:</b> Jenis kelamin, suku bangsa.</p>
+                    </div>
+                    <div class="p-4">
+                        <div class="text-4xl mb-2">🏆</div>
+                        <h4 class="font-bold">Achieved Status</h4>
+                        <p class="text-sm">Status yang diraih melalui usaha dan kemampuan. <br><b>Contoh:</b> Juara kelas, ketua OSIS.</p>
+                    </div>
+                    <div class="p-4">
+                        <div class="text-4xl mb-2">🎖️</div>
+                        <h4 class="font-bold">Assigned Status</h4>
+                        <p class="text-sm">Status yang diberikan oleh masyarakat karena jasa. <br><b>Contoh:</b> Gelar pahlawan, siswa teladan.</p>
+                    </div>
+                </div>
+             </div>
+
+        </section>
+
+        <section id="modul4" class="module-section space-y-12">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-gray-800">Modul 4: Perubahan Sosial</h2>
+                <p class="mt-2 text-gray-600 max-w-2xl mx-auto">Dunia nggak pernah berhenti bergerak! Dari gaya berpakaian sampai teknologi, semuanya berubah. Kenapa bisa begitu? Yuk, kita cari tahu penyebab, dampak, dan bentuk-bentuk perubahannya.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+                <div class="content-card p-6">
+                    <h3 class="font-bold text-xl mb-4 text-center">Faktor Pendorong Perubahan</h3>
+                     <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><b>Faktor Internal:</b> Dari dalam masyarakat, seperti penemuan baru (inovasi), konflik, dan perubahan jumlah penduduk.</li>
+                         <li><b>Faktor Eksternal:</b> Dari luar masyarakat, seperti bencana alam, peperangan, dan pengaruh budaya lain (misal: K-Pop).</li>
+                     </ul>
+                </div>
+                 <div class="content-card p-6">
+                    <h3 class="font-bold text-xl mb-4 text-center">Faktor Penghambat Perubahan</h3>
+                     <ul class="list-disc list-inside space-y-2 text-gray-700">
+                         <li>Kurangnya hubungan dengan dunia luar (isolasi).</li>
+                         <li>Sikap masyarakat yang sangat tradisional.</li>
+                         <li>Adanya kepentingan yang sudah mapan (vested interest).</li>
+                         <li>Prasangka terhadap hal-hal baru atau asing.</li>
+                     </ul>
+                </div>
+            </div>
+            
+             <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Kecepatan Perubahan Sosial</h3>
+                <p class="text-center text-gray-600 mb-6">Perubahan sosial bisa terjadi sangat lambat seperti kura-kura (Evolusi), atau sangat cepat dan mendasar seperti kilat (Revolusi).</p>
+                <div class="chart-container">
+                    <canvas id="socialChangeChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="modul5" class="module-section space-y-12">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-gray-800">Modul 5: Masyarakat Multikultural</h2>
+                <p class="mt-2 text-gray-600 max-w-2xl mx-auto">Indonesia itu seperti gado-gado raksasa! Ratusan suku, bahasa, dan agama hidup bersama. Inilah yang disebut masyarakat multikultural. Yuk, kita pelajari kekayaan dan tantangannya!</p>
+            </div>
+
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Penyebab Keberagaman di Indonesia</h3>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex items-center gap-4">
+                        <div class="text-4xl">🏝️</div>
+                        <div>
+                            <h4 class="font-semibold">Kondisi Geografis</h4>
+                            <p class="text-sm">Negara kepulauan membuat setiap daerah mengembangkan budayanya sendiri.</p>
+                        </div>
+                    </div>
+                     <div class="flex items-center gap-4">
+                        <div class="text-4xl">🚢</div>
+                        <div>
+                            <h4 class="font-semibold">Letak Strategis</h4>
+                            <p class="text-sm">Menjadi jalur perdagangan dunia, membawa pengaruh budaya asing (India, Tiongkok, Arab, Eropa).</p>
+                        </div>
+                    </div>
+                     <div class="flex items-center gap-4">
+                        <div class="text-4xl">☀️</div>
+                        <div>
+                            <h4 class="font-semibold">Perbedaan Iklim</h4>
+                            <p class="text-sm">Perbedaan iklim dan alam membentuk mata pencaharian dan kebiasaan yang berbeda.</p>
+                        </div>
+                    </div>
+                      <div class="flex items-center gap-4">
+                        <div class="text-4xl">📜</div>
+                        <div>
+                            <h4 class="font-semibold">Sejarah Bangsa</h4>
+                            <p class="text-sm">Interaksi antar kerajaan kuno hingga masa kemerdekaan memperkaya budaya.</p>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+
+            <div class="content-card p-6">
+                 <h3 class="font-bold text-xl mb-4 text-center">Tantangan dalam Keberagaman</h3>
+                 <p class="text-center text-gray-600 mb-6">Perbedaan bisa menjadi sumber masalah jika tidak disikapi dengan bijak. Waspadai hal-hal berikut!</p>
+                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
+                    <div class="p-3 bg-yellow-100 rounded-lg">
+                        <h4 class="font-semibold text-yellow-800">Prasangka</h4>
+                        <p class="text-xs">Sikap negatif tanpa bukti.</p>
+                    </div>
+                     <div class="p-3 bg-yellow-100 rounded-lg">
+                        <h4 class="font-semibold text-yellow-800">Stereotip</h4>
+                        <p class="text-xs">Cap atau label kaku.</p>
+                    </div>
+                     <div class="p-3 bg-yellow-100 rounded-lg">
+                        <h4 class="font-semibold text-yellow-800">Etnosentrisme</h4>
+                        <p class="text-xs">Menganggap budaya sendiri paling hebat.</p>
+                    </div>
+                     <div class="p-3 bg-yellow-100 rounded-lg">
+                        <h4 class="font-semibold text-yellow-800">Rasisme</h4>
+                        <p class="text-xs">Merasa ras sendiri lebih unggul.</p>
+                    </div>
+                     <div class="p-3 bg-yellow-100 rounded-lg">
+                        <h4 class="font-semibold text-yellow-800">Diskriminasi</h4>
+                        <p class="text-xs">Perlakuan tidak adil.</p>
+                    </div>
+                     <div class="p-3 bg-yellow-100 rounded-lg">
+                        <h4 class="font-semibold text-yellow-800">Konflik</h4>
+                        <p class="text-xs">Benturan antar kelompok.</p>
+                    </div>
+                 </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center py-6 border-t border-gray-200 mt-12">
+        <p class="text-gray-500 text-sm">Web Aplikasi Belajar Sosiologi | Dibuat untuk Siswa Kelas 10</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navButtons = document.querySelectorAll('.nav-button');
+            const modules = document.querySelectorAll('.module-section');
+            const welcomeSection = document.getElementById('welcome');
+            let activeModule = null;
+            let socialControlChart = null;
+            let socialChangeChart = null;
+            
+            function showModule(targetId) {
+                welcomeSection.style.display = 'none';
+                modules.forEach(module => {
+                    if (module.id === targetId) {
+                        module.style.display = 'block';
+                        activeModule = module.id;
+                    } else {
+                        module.style.display = 'none';
+                    }
+                });
+                updateActiveButton(targetId);
+                initializeCharts(targetId);
+            }
+
+            function updateActiveButton(targetId) {
+                navButtons.forEach(button => {
+                    if (button.dataset.target === targetId) {
+                        button.classList.add('active');
+                    } else {
+                        button.classList.remove('active');
+                    }
+                });
+            }
+
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.dataset.target;
+                    showModule(targetId);
+                });
+            });
+
+            const pyramidLevels = document.querySelectorAll('.pyramid-level');
+            const normaInfoBox = document.getElementById('norma-info');
+            pyramidLevels.forEach(level => {
+                level.addEventListener('click', () => {
+                    normaInfoBox.textContent = level.dataset.info;
+                    normaInfoBox.style.opacity = 1;
+                    pyramidLevels.forEach(l => l.style.transform = 'scale(1)');
+                    level.style.transform = 'scale(1.05)';
+                });
+            });
+
+            function initializeCharts(moduleId) {
+                if (moduleId === 'modul2') {
+                    if (socialControlChart) socialControlChart.destroy();
+                    const ctx = document.getElementById('socialControlChart').getContext('2d');
+                    socialControlChart = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Persuasif (Ajakan)', 'Koersif (Paksaan)', 'Pendidikan', 'Agama', 'Gosip'],
+                            datasets: [{
+                                label: 'Metode Pengendalian',
+                                data: [40, 20, 25, 10, 5],
+                                backgroundColor: ['#34D399', '#F87171', '#60A5FA', '#FBBF24', '#A78BFA'],
+                                hoverOffset: 4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                title: {
+                                    display: false,
+                                    text: 'Metode Pengendalian Sosial'
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                if (moduleId === 'modul4') {
+                     if (socialChangeChart) socialChangeChart.destroy();
+                     const ctx2 = document.getElementById('socialChangeChart').getContext('2d');
+                     socialChangeChart = new Chart(ctx2, {
+                        type: 'line',
+                        data: {
+                            labels: ['Tahun 1', 'Tahun 2', 'Tahun 3', 'Tahun 4', 'Tahun 5', 'Tahun 6'],
+                            datasets: [
+                                {
+                                    label: 'Evolusi (Lambat)',
+                                    data: [10, 12, 15, 17, 20, 22],
+                                    borderColor: '#60A5FA',
+                                    tension: 0.4,
+                                    fill: false
+                                },
+                                {
+                                    label: 'Revolusi (Cepat)',
+                                    data: [10, 11, 11, 50, 52, 53],
+                                    borderColor: '#F87171',
+                                    tension: 0.1,
+                                    fill: false,
+                                    stepped: 'before'
+                                }
+                            ]
+                        },
+                         options: {
+                             responsive: true,
+                             maintainAspectRatio: false,
+                             scales: {
+                                 y: {
+                                     beginAtZero: true,
+                                     title: {
+                                         display: true,
+                                         text: 'Tingkat Perubahan'
+                                     }
+                                 }
+                             },
+                             plugins: {
+                                 tooltip: {
+                                     mode: 'index',
+                                     intersect: false
+                                 }
+                             }
+                         }
+                     });
+                }
+            }
+            
+            showModule('modul1');
+
+        });
+    </script>
+
+</body>
+</html>
