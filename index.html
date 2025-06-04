@@ -1,50 +1,64 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
 <head>
-    <meta charset="UTF--8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jelajah Geosfer - Pembelajaran Interaktif Geografi (Lengkap)</title>
+    <title>Sosiologi Interaktif Kelas 10</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Chosen Palette: Earthy Neutrals -->
-    <!-- Application Structure Plan: Desain aplikasi ini menggunakan pendekatan Single-Page Application (SPA) dengan navigasi utama berbasis kartu (card-based). Setiap "sfer" (Litosfer, Pedosfer, dll.) menjadi sebuah bagian (section) yang dapat diakses dari halaman utama. Struktur ini dipilih untuk memberikan kebebasan eksplorasi kepada siswa, memungkinkan mereka melompat ke topik yang menarik tanpa harus mengikuti urutan linear seperti pada dokumen teks. Interaktivitas difokuskan pada visualisasi konsep-konsep kunci (seperti siklus batuan, lapisan atmosfer) melalui diagram interaktif berbasis HTML/CSS dan grafik data untuk mempermudah pemahaman, bukan sekadar membaca. Tujuannya adalah mengubah materi pasif menjadi pengalaman belajar yang aktif dan menarik. Konten diperluas berdasarkan materi referensi untuk detail yang lebih kaya. -->
-    <!-- Visualization & Content Choices: Pilihan visualisasi didasarkan pada tujuan pembelajaran. Goal: Mengorganisir -> Diagram interaktif lapisan Bumi/tanah/atmosfer (HTML divs), siklus batuan/air (HTML+CSS). Goal: Membandingkan -> Tabel perbandingan Endogen vs. Eksogen, grafik batang Chart.js untuk kepadatan penduduk. Goal: Menunjukkan Perubahan -> Diagram toggle Angin Darat/Laut. Goal: Menginformasikan -> Kartu-kartu interaktif (flippable cards) untuk dampak lingkungan, modal untuk detail tambahan. Setiap elemen interaktif dirancang untuk menyajikan informasi secara ringkas dan visual, dengan teks detail yang bisa diakses melalui klik atau hover, untuk menjaga antarmuka tetap bersih dan fokus. Peta biogeografi Indonesia dibuat dengan div dan gambar latar untuk menunjukkan zona Wallacea. Penambahan detail dan analogi dari materi referensi diintegrasikan ke dalam deskripsi dan elemen interaktif. -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Harmoni Belajar -->
+    <!-- Application Structure Plan: Saya merancang SPA ini dengan struktur modular berbasis dashboard. Navigasi utama yang jelas di bagian atas memungkinkan siswa untuk melompat ke modul mana pun (Interaksi, Nilai & Norma, dll.) tanpa harus menggulir secara linear. Struktur ini dipilih untuk memecah materi yang padat menjadi bagian-bagian yang mudah dicerna, sesuai dengan cara belajar digital native. Setiap modul disajikan sebagai 'halaman' dinamis yang menampilkan konten melalui komponen interaktif seperti kartu, tab, dan diagram visual untuk menggantikan paragraf panjang. Alur pengguna dimulai dari sambutan, memilih modul, berinteraksi dengan konten yang disajikan secara visual, lalu bebas berpindah ke modul lain. Tujuannya adalah mengubah pembelajaran pasif (membaca) menjadi eksplorasi aktif untuk meningkatkan keterlibatan dan pemahaman siswa. -->
+    <!-- Visualization & Content Choices: Untuk menerjemahkan materi Sosiologi, saya memilih visualisasi yang sesuai dengan tujuan pedagogisnya. (1) Interaksi Sosial: Diagram HTML/CSS interaktif digunakan untuk memvisualisasikan konsep abstrak 'Asosiatif vs Disosiatif'. (2) Nilai & Norma: Diagram Piramida HTML/CSS yang interaktif dipilih untuk merepresentasikan 'Tingkatan Norma' karena secara intuitif menunjukkan hierarki dan kekuatan ikatan dari 'Cara' hingga 'Hukum'. Sebuah chart donat dari Chart.js memvisualisasikan metode 'Pengendalian Sosial' untuk perbandingan proporsi yang mudah dipahami. (3) Struktur Sosial: Perbandingan 'Diferensiasi vs Stratifikasi' disajikan dalam tabel berdampingan untuk kejelasan maksimal. (4) Perubahan Sosial: Chart garis dari Chart.js dipakai untuk menggambarkan perbedaan drastis antara 'Evolusi' (garis landai) dan 'Revolusi' (garis curam), yang jauh lebih efektif daripada teks. Semua pilihan ini dibuat untuk menyederhanakan konsep kompleks, meningkatkan keterlibatan, dan sepenuhnya menghindari penggunaan SVG atau Mermaid.js. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #F8F4F0; /* Warm Neutral Background */
-            color: #374151; /* Default text color: Gray-700 */
+            font-family: 'Poppins', sans-serif;
+            background-color: #F8F5F2; /* Warm Neutral Background */
+            color: #4A4A4A; /* Dark Grey for Text */
         }
-        .main-card {
-            background-color: #FFFFFF;
-            border-radius: 1rem;
+        .nav-button {
+            transition: all 0.3s ease;
+            position: relative;
+            color: #757575; /* Medium Grey for Nav Buttons */
+        }
+        .nav-button:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #E57373; /* Subtle Accent Red */
+            transition: width 0.3s ease;
+        }
+        .nav-button.active:after, .nav-button:hover:after {
+            width: 100%;
+        }
+        .nav-button.active {
+            color: #D32F2F; /* Stronger Accent Red for Active State */
+            font-weight: 600;
+        }
+        .content-card {
+            background-color: #FFFFFF; /* White for Content Cards */
+            border-radius: 12px;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid #E5E7EB;
-            min-height: 150px; /* Ensure cards have a minimum height */
         }
-        .main-card:hover {
+        .content-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         }
-        .content-section {
+        .module-section {
             display: none;
+            animation: fadeIn 0.8s;
         }
-        .content-section.active {
-            display: block;
-        }
-        .interactive-diagram-item, .clickable-info {
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .interactive-diagram-item:hover, .clickable-info:hover {
-            background-color: #E0E7FF; /* Light Indigo for hover */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         .chart-container {
             position: relative;
@@ -52,877 +66,900 @@
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
-            height: 350px; /* Base height */
+            height: 300px;
             max-height: 400px;
         }
         @media (min-width: 768px) {
             .chart-container {
-                height: 400px; /* Taller on larger screens */
+                height: 350px;
             }
         }
-        .tab-button {
-            transition: all 0.3s;
-            border-bottom: 2px solid transparent;
-            padding: 0.5rem 1rem;
+        html {
+            scroll-behavior: smooth;
         }
-        .tab-button.active {
-            border-bottom-color: #6B7280; /* Gray-500 */
-            color: #111827; /* Gray-900 */
-            font-weight: 600;
-        }
-
-        .rock-cycle {
-            position: relative;
-            width: 100%;
-            max-width: 450px; /* Slightly smaller for better layout */
-            height: 450px;
-            margin: auto;
-        }
-        .rock {
-            position: absolute;
-            padding: 0.75rem 1rem;
-            border: 2px solid #786452; /* Brown */
-            background-color: #FDFBF7; /* Off-white */
-            border-radius: 0.5rem;
-            text-align: center;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .rock:hover {
-            background-color: #EADFD5; /* Light beige */
-            transform: scale(1.05);
-        }
-        .rock#magma { top: 80%; left: 38%; }
-        .rock#beku { top: 50%; left: 2%; }
-        .rock#sedimen { top: 5%; left: 35%; }
-        .rock#metamorf { top: 50%; left: 70%; }
-
-        .arrow {
-            position: absolute;
-            color: #786452; /* Brown */
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        .arrow-text {
-            position: absolute;
-            font-size: 0.65rem; /* Smaller for more text */
-            color: #57534E; /* Darker Brown-Gray */
-            padding: 2px 4px;
-            background-color: rgba(248, 244, 240, 0.8); /* Slightly more opaque */
-            border-radius: 4px;
-            text-align: center;
-        }
-        #arrow-1 { top: 68%; left: 23%; transform: rotate(-45deg); }
-        #arrow-text-1 { top: 72%; left: 15%; width: 80px;}
-        #arrow-2 { top: 28%; left: 18%; transform: rotate(45deg); }
-        #arrow-text-2 { top: 32%; left: 8%; width: 100px;}
-        #arrow-3 { top: 28%; left: 63%; transform: rotate(135deg); }
-        #arrow-text-3 { top: 32%; left: 60%; width: 90px;}
-        #arrow-4 { top: 68%; left: 65%; transform: rotate(-135deg); }
-        #arrow-text-4 { top: 72%; left: 58%; width: 60px;}
-        #arrow-5 { top: 10%; left: 50%; transform: rotate(90deg); } /* Beku/Sedimen ke Metamorf */
-        #arrow-text-5 { top: 15%; left: 52%; width: 90px;}
-        /* Additional arrows for more complete cycle */
-        #arrow-6 { top: 65%; left: 50%; transform: rotate(-90deg); } /* Metamorf ke Magma */
-        #arrow-text-6 { top: 70%; left: 48%; width: 60px;}
-        #arrow-7 { top: 20%; left: 30%; transform: rotate(0deg); } /* Beku ke Sedimen langsung */
-        #arrow-text-7 { top: 15%; left: 25%; width: 100px;}
-
-
-        .earth-layer-diagram {
-            width: 100%;
-            max-width: 300px;
-            margin: 1rem auto;
-            text-align: center;
-        }
-        .earth-layer {
-            padding: 0.5rem;
-            color: white;
-            font-weight: bold;
-            border: 2px solid #4A5568;
-        }
-        .earth-layer.crust { background-color: #A0522D; border-radius: 10px 10px 0 0; } /* Sienna Brown */
-        .earth-layer.mantle { background-color: #FF8C00; } /* Dark Orange */
-        .earth-layer.outer-core { background-color: #FFD700; } /* Gold */
-        .earth-layer.inner-core { background-color: #FFFFE0; color: #333; border-radius: 0 0 10px 10px; } /* Light Yellow */
-
-        .sial-sima-diagram div {
-            padding: 1rem;
-            margin: 0.5rem 0;
-            border-radius: 0.5rem;
-            text-align: center;
-        }
-        .sial { background-color: #D2B48C; } /* Tan */
-        .sima { background-color: #8B4513; color: white; } /* Saddle Brown */
-
-        .soil-horizon {
-            transition: filter 0.3s;
-        }
-        .soil-horizon:hover {
-            filter: brightness(1.1);
-        }
-        
-        .info-box {
-            background-color: #F3F4F6; /* Gray-100 */
-            border-left: 4px solid #60A5FA; /* Blue-400 */
-            padding: 1rem;
-            margin-top: 1rem;
-            border-radius: 0.25rem;
-        }
-        .analogy-box {
-            background-color: #FEFCE8; /* Yellow-50 */
-            border-left: 4px solid #FACC15; /* Yellow-400 */
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 0.25rem;
-            font-style: italic;
+        .sub-card {
+            background-color: #FFF7F5; /* Very Light Warm Neutral for sub-cards */
+            border-left: 4px solid #FFAB91; /* Light Accent Orange for border */
         }
     </style>
 </head>
-<body class="text-gray-700">
+<body class="antialiased">
 
-    <header class="text-center py-8 md:py-12 bg-white shadow-md">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">Jelajah Geosfer</h1>
-        <p class="mt-4 text-lg text-gray-600">Petualangan Seru Memahami Lapisan-Lapisan Bumi Kita (Versi Lengkap)</p>
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 py-3">
+            <div class="flex flex-wrap justify-center items-center gap-4 md:gap-8">
+                <button class="nav-button text-sm md:text-base" data-target="modul1">Interaksi Sosial</button>
+                <button class="nav-button text-sm md:text-base" data-target="modul2">Nilai & Norma</button>
+                <button class="nav-button text-sm md:text-base" data-target="modul3">Struktur Sosial</button>
+                <button class="nav-button text-sm md:text-base" data-target="modul4">Perubahan Sosial</button>
+                <button class="nav-button text-sm md:text-base" data-target="modul5">Multikultural</button>
+            </div>
+        </nav>
     </header>
 
-    <nav id="main-nav" class="p-4 md:p-8">
-        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
-            <div onclick="showSection('litosfer')" class="main-card p-4 text-center cursor-pointer flex flex-col items-center justify-center">
-                <span class="text-5xl mb-2">⛰️</span>
-                <h2 class="text-xl font-semibold">Litosfer</h2>
-                <p class="text-sm text-gray-500">Lapisan Batuan</p>
-            </div>
-            <div onclick="showSection('pedosfer')" class="main-card p-4 text-center cursor-pointer flex flex-col items-center justify-center">
-                 <span class="text-5xl mb-2">🌱</span>
-                <h2 class="text-xl font-semibold">Pedosfer</h2>
-                <p class="text-sm text-gray-500">Lapisan Tanah</p>
-            </div>
-            <div onclick="showSection('atmosfer')" class="main-card p-4 text-center cursor-pointer flex flex-col items-center justify-center">
-                 <span class="text-5xl mb-2">☁️</span>
-                <h2 class="text-xl font-semibold">Atmosfer</h2>
-                <p class="text-sm text-gray-500">Lapisan Udara</p>
-            </div>
-            <div onclick="showSection('hidrosfer')" class="main-card p-4 text-center cursor-pointer flex flex-col items-center justify-center">
-                 <span class="text-5xl mb-2">💧</span>
-                <h2 class="text-xl font-semibold">Hidrosfer</h2>
-                <p class="text-sm text-gray-500">Lapisan Air</p>
-            </div>
-            <div onclick="showSection('biosfer')" class="main-card p-4 text-center cursor-pointer flex flex-col items-center justify-center">
-                 <span class="text-5xl mb-2">🐅</span>
-                <h2 class="text-xl font-semibold">Biosfer</h2>
-                <p class="text-sm text-gray-500">Makhluk Hidup</p>
-            </div>
-            <div onclick="showSection('antroposfer')" class="main-card p-4 text-center cursor-pointer flex flex-col items-center justify-center">
-                 <span class="text-5xl mb-2">🧑‍🤝‍🧑</span>
-                <h2 class="text-xl font-semibold">Antroposfer</h2>
-                <p class="text-sm text-gray-500">Manusia</p>
-            </div>
+    <main class="container mx-auto p-4 md:p-8">
+        <div id="welcome" class="text-center py-16 px-4">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Sosiologi Itu Seru!</h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">Selamat datang di petualangan Sosiologi Kelas 10! Materi di sini sudah lebih lengkap dan detail lho. Pilih modul di atas untuk mulai menjelajahi dunia masyarakat yang penuh warna.</p>
         </div>
-    </nav>
 
-    <main class="max-w-7xl mx-auto p-4 md:p-8">
-        
-        <section id="home" class="content-section active text-center">
-            <h2 class="text-3xl font-bold text-gray-800 mb-4">Selamat Datang Kembali, Sobat Geo!</h2>
-            <p class="text-lg text-gray-600 max-w-3xl mx-auto">
-                Bumi kita ini seperti bawang bombay raksasa dengan banyak lapisan. Setiap lapisan punya cerita dan peran uniknya masing-masing.
-                Di versi ini, kita akan menyelam lebih dalam ke setiap lapisan. Yuk, pilih salah satu lapisan di atas untuk memulai petualangan geografi yang lebih detail dan seru!
-            </p>
-            <div class="mt-8 flex justify-center">
-                 <div class="w-full max-w-md h-64 bg-white rounded-xl shadow-lg flex items-center justify-center p-6">
-                    <p class="text-2xl font-semibold text-gray-700">"Memahami Geosfer adalah kunci memahami rumah kita, Bumi."</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- LITOSFER -->
-        <section id="litosfer" class="content-section">
-            <h2 class="text-3xl font-bold mb-2">⛰️ Litosfer: Pijakan Kita yang Nggak Pernah Diam!</h2>
-            <p class="text-lg text-gray-600 mb-6">Litosfer, dari bahasa Yunani "lithos" (batu) dan "sphaira" (lapisan), adalah lapisan batuan atau kulit terluar Bumi kita yang padat. Ini bukan cuma daratan, tapi juga dasar samudra. Litosfer melindungi bagian dalam Bumi yang panas dan jadi tempat kita semua beraktivitas.</p>
-            <div class="analogy-box">
-                <p><strong>Analogi Kulit Apel:</strong> Bayangkan Bumi itu apel raksasa. Litosfer itu kulitnya, tipis tapi vital, melindungi isi apel dan jadi tempat kita berpijak.</p>
+        <section id="modul1" class="module-section space-y-12">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-gray-800">Modul 1: Asyiknya Berinteraksi Sosial! Yuk, Kenalan Lebih Dekat!</h2>
+                <p class="mt-2 text-gray-600 max-w-2xl mx-auto">Pernah nggak sih kamu kepikiran, kenapa kita butuh ngobrol sama teman, kerja kelompok, atau bahkan sekadar senyum ke orang lain? Semua itu ada hubungannya sama interaksi sosial. Di modul ini, kita bakal kupas tuntas soal interaksi sosial, mulai dari artinya, kenapa penting, syaratnya apa aja, faktor pendorongnya, sampai bentuk-bentuknya yang kadang bikin akur, kadang bikin tegang!</p>
             </div>
 
-            <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
-                <h3 class="text-2xl font-semibold mb-4">Mengintip Isi Perut Bumi: Dari Kerak Sampai Inti</h3>
-                <p class="text-gray-600 mb-4">Kalau Bumi dibelah kayak kue, kita akan lihat lapisan-lapisan ini (mirip bawang bombay):</p>
-                <div class="earth-layer-diagram">
-                    <div class="earth-layer crust">Kerak Bumi (Bagian Litosfer, tempat kita tinggal)</div>
-                    <div class="earth-layer mantle">Mantel Bumi (Lebih tebal, batuan kental & panas)</div>
-                    <div class="earth-layer outer-core">Inti Luar (Cair, super panas)</div>
-                    <div class="earth-layer inner-core">Inti Dalam (Padat, paling panas)</div>
-                </div>
-                <p class="text-gray-600 mt-4">Litosfer sendiri terdiri dari dua lapisan utama berdasarkan komposisi kimianya:</p>
-                <div class="sial-sima-diagram mt-2">
-                    <div class="sial"><strong>Lapisan SIAL (Silisium & Aluminium):</strong> Lebih ringan, tebal, membentuk benua.</div>
-                    <div class="sima"><strong>Lapisan SIMA (Silisium & Magnesium):</strong> Lebih berat, tipis, membentuk dasar samudra.</div>
-                </div>
-            </div>
-            
-            <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
-                <h3 class="text-2xl font-semibold mb-4 text-center">Siklus Batuan Interaktif: Perjalanan Ajaib Para Batu</h3>
-                <p class="text-center text-gray-600 mb-4">Batu-batu di sekitar kita terus berubah bentuk dalam siklus batuan. Klik pada setiap jenis batuan untuk melihat penjelasannya!</p>
-                <div class="analogy-box">
-                    <p><strong>Analogi Metamorfosis Kupu-kupu atau Resep Masakan:</strong> Magma (telur/bahan dasar) ➔ Batuan Beku (ulat/hasil pendinginan) ➔ Sedimen (hancuran) ➔ Batuan Sedimen (kepompong/hasil pemadatan) ➔ Batuan Metamorf (kupu-kupu/hasil "dimasak" ulang). Semua bisa kembali jadi magma!</p>
-                </div>
-                <div class="flex flex-col md:flex-row items-start gap-6">
-                    <div class="rock-cycle">
-                        <div id="magma" class="rock" onclick="showRockInfo('magma')">Magma</div>
-                        <div id="beku" class="rock" onclick="showRockInfo('beku')">Batuan Beku</div>
-                        <div id="sedimen" class="rock" onclick="showRockInfo('sedimen')">Batuan Sedimen</div>
-                        <div id="metamorf" class="rock" onclick="showRockInfo('metamorf')">Batuan Metamorf</div>
-                        
-                        <div class="arrow" id="arrow-1">➔</div><div class="arrow-text" id="arrow-text-1">Pendinginan & Kristalisasi</div>
-                        <div class="arrow" id="arrow-2">➔</div><div class="arrow-text" id="arrow-text-2">Pelapukan, Erosi, Transportasi, Pengendapan, Litifikasi</div>
-                        <div class="arrow" id="arrow-3">➔</div><div class="arrow-text" id="arrow-text-3">Panas & Tekanan (Metamorfisme)</div>
-                        <div class="arrow" id="arrow-4">➔</div><div class="arrow-text" id="arrow-text-4">Meleleh</div>
-                        <div class="arrow" id="arrow-5">➔</div><div class="arrow-text" id="arrow-text-5">Panas & Tekanan (dari Beku/Sedimen ke Metamorf)</div>
-                        <div class="arrow" id="arrow-6">➔</div><div class="arrow-text" id="arrow-text-6">Meleleh (dari Metamorf ke Magma)</div>
-                        <div class="arrow" id="arrow-7">➔</div><div class="arrow-text" id="arrow-text-7">Pelapukan & Erosi (dari Beku ke Sedimen)</div>
-                    </div>
-                    <div id="rock-info" class="w-full md:w-2/5 p-4 bg-gray-100 rounded-lg min-h-[200px]">
-                        <h4 class="font-bold text-lg mb-2">Info Batuan</h4>
-                        <p>Silakan klik salah satu jenis batuan pada diagram untuk melihat detailnya di sini.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-6 mb-8">
-                <div class="bg-white p-6 rounded-xl shadow-lg">
-                    <h3 class="text-2xl font-semibold mb-4">Tenaga Endogen: Kekuatan dari Dalam</h3>
-                     <p class="text-gray-600 mb-4">Ini adalah kekuatan super dahsyat dari perut Bumi yang membangun atau mengubah bentuk permukaan Bumi jadi nggak rata (gunung, lembah). Bayangkan seperti ada kompor raksasa di dalam Bumi!</p>
-                    <ul class="list-disc list-inside space-y-3 text-gray-700">
-                        <li><strong>Tektonisme:</strong> Pergerakan lempeng-lempeng tektonik (puzzle raksasa Bumi) yang bisa saling dorong (konvergen), menjauh (divergen), atau gesek (transform). Menyebabkan:
-                            <ul class="list-circle list-inside ml-4 mt-1">
-                                <li><strong>Gerak Epirogenetik:</strong> Naik/turunnya daratan secara lambat & luas.</li>
-                                <li><strong>Gerak Orogenetik:</strong> Gerakan lebih cepat, membentuk pegunungan, lipatan (antiklin & sinklin, seperti karpet didorong), dan patahan/sesar (horst & graben, seperti biskuit patah). Contoh lipatan: Peg. Bukit Barisan. Contoh patahan: Patahan Semangko.</li>
-                            </ul>
-                        </li>
-                        <li><strong>Vulkanisme:</strong> Aktivitas magma yang keluar ke permukaan (ekstrusi/letusan) atau menyusup tapi tidak sampai permukaan (intrusi). Seperti membuka botol soda yang dikocok! Contoh: G. Merapi, Krakatau.</li>
-                        <li><strong>Seisme (Gempa Bumi):</strong> Getaran di permukaan Bumi akibat pelepasan energi tiba-tiba, umumnya karena pergerakan lempeng atau aktivitas vulkanik. Seperti Bumi lagi menggigil! Contoh: Gempa Aceh 2004.</li>
-                    </ul>
-                </div>
-                 <div class="bg-white p-6 rounded-xl shadow-lg">
-                    <h3 class="text-2xl font-semibold mb-4">Tenaga Eksogen: Ukiran dari Luar</h3>
-                     <p class="text-gray-600 mb-4">Kekuatan dari luar Bumi (air, angin, matahari, makhluk hidup) yang merombak dan meratakan permukaan Bumi. Seperti amplas atau pahat alam.</p>
-                    <ul class="list-disc list-inside space-y-3 text-gray-700">
-                        <li><strong>Pelapukan:</strong> Hancurnya batuan di tempat.
-                            <ul class="list-circle list-inside ml-4 mt-1">
-                                <li><strong>Mekanik/Fisik:</strong> Karena perubahan suhu, pembekuan air.</li>
-                                <li><strong>Kimiawi:</strong> Karena reaksi kimia (misal, air hujan asam melarutkan kapur).</li>
-                                <li><strong>Organik:</strong> Karena aktivitas makhluk hidup (akar tanaman, lumut).</li>
-                            </ul>
-                        </li>
-                        <li><strong>Erosi (Pengikisan):</strong> Pengikisan dan pemindahan material.
-                            <ul class="list-circle list-inside ml-4 mt-1">
-                                <li><strong>Ablasi:</strong> Oleh air mengalir (sungai).</li>
-                                <li><strong>Abrasi:</strong> Oleh gelombang laut.</li>
-                                <li><strong>Eksarasi:</strong> Oleh es/gletser.</li>
-                                <li><strong>Deflasi/Korasi:</strong> Oleh angin.</li>
-                            </ul>
-                        </li>
-                        <li><strong>Mass Wasting (Gerakan Massa Tanah):</strong> Perpindahan massa batuan/tanah menuruni lereng karena gravitasi. Contoh: Tanah longsor.</li>
-                        <li><strong>Sedimentasi (Pengendapan):</strong> Pengendapan material hasil erosi. Contoh: Delta di muara sungai, gumuk pasir.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="bg-white p-6 rounded-xl shadow-lg">
-                <h3 class="text-2xl font-semibold mb-4">Fenomena Litosfer di Indonesia & Manfaatnya</h3>
-                <p class="text-gray-600 mb-4">Indonesia, terletak di Cincin Api Pasifik, adalah "laboratorium" litosfer! Banyak gunung api, sering gempa, dan bentang alamnya beragam. Ini membawa tantangan (bencana) sekaligus berkah:</p>
-                <ul class="list-disc list-inside space-y-2 text-gray-700">
-                    <li>Abu vulkanik menyuburkan tanah untuk pertanian.</li>
-                    <li>Proses geologi membentuk pegunungan indah, sumber mata air, dan tempat wisata.</li>
-                    <li>Memunculkan cadangan mineral berharga (emas, tembaga, batu bara, minyak bumi).</li>
-                    <li>Litosfer adalah pondasi kehidupan darat dan sumber material bangunan hingga gadget.</li>
-                </ul>
-            </div>
-             <div class="mt-6 overflow-x-auto">
-                <h3 class="text-xl font-semibold mb-2 text-center">Tabel Perbandingan: Tenaga Endogen vs. Eksogen</h3>
-                <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow">
-                    <thead class="bg-gray-200">
-                        <tr>
-                            <th class="py-2 px-4 border-b">Tenaga</th>
-                            <th class="py-2 px-4 border-b">Sumber</th>
-                            <th class="py-2 px-4 border-b">Sifat Utama</th>
-                            <th class="py-2 px-4 border-b">Proses Utama</th>
-                            <th class="py-2 px-4 border-b">Contoh Bentukan Alam</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="hover:bg-gray-50">
-                            <td class="py-2 px-4 border-b">Endogen</td>
-                            <td class="py-2 px-4 border-b">Dari dalam Bumi</td>
-                            <td class="py-2 px-4 border-b">Membangun/Mengubah</td>
-                            <td class="py-2 px-4 border-b">Tektonisme, Vulkanisme, Seisme</td>
-                            <td class="py-2 px-4 border-b">Pegunungan, Gunung Api, Palung Laut, Patahan, Lipatan</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50">
-                            <td class="py-2 px-4 border-b">Eksogen</td>
-                            <td class="py-2 px-4 border-b">Dari luar Bumi</td>
-                            <td class="py-2 px-4 border-b">Merombak/Meratakan</td>
-                            <td class="py-2 px-4 border-b">Pelapukan, Erosi, Mass Wasting, Sedimentasi</td>
-                            <td class="py-2 px-4 border-b">Lembah Sungai, Delta, Gumuk Pasir, Gua, Pantai Terkikis</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- PEDOSFER -->
-        <section id="pedosfer" class="content-section">
-            <h2 class="text-3xl font-bold mb-2">🌱 Pedosfer: Tanah Ajaib Sumber Kehidupan</h2>
-            <p class="text-lg text-gray-600 mb-6">Pedosfer ("pedo" = tanah) adalah lapisan tanah yang menyelimuti permukaan Bumi. Ilmu yang mempelajarinya disebut Pedologi. Tanah ini seperti selimut tipis nan subur tempat tanaman tumbuh, hewan kecil hidup, dan sumber makanan kita berasal.</p>
-            
-            <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
-                <h3 class="text-2xl font-semibold mb-4">Resep Rahasia Terbentuknya Tanah (Pedogenesis)</h3>
-                <p class="text-gray-600 mb-4">Tanah terbentuk melalui proses pedogenesis yang butuh waktu ribuan tahun! Faktor pembentuknya:</p>
-                <div class="analogy-box">
-                    <p><strong>Analogi Membuat Adonan Kue atau Pelapukan Bangunan Tua:</strong> Batuan induk (tepung) dilapukkan, dicampur bahan organik/humus (ragi/gula), lalu "dimasak" oleh iklim, organisme, topografi, dan waktu.</p>
-                </div>
-                <ul class="list-disc list-inside space-y-2 text-gray-700">
-                    <li><strong>Bahan Induk:</strong> Batuan asal dari litosfer.</li>
-                    <li><strong>Iklim:</strong> Suhu & curah hujan mempengaruhi kecepatan pelapukan.</li>
-                    <li><strong>Organisme:</strong> Bakteri, jamur, cacing (petani alami!) bantu mengurai bahan organik & menggemburkan tanah.</li>
-                    <li><strong>Topografi/Relief:</strong> Kemiringan lereng mempengaruhi ketebalan tanah.</li>
-                    <li><strong>Waktu:</strong> Proses pembentukan tanah sangat lama.</li>
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Apa Sih Interaksi Sosial Itu? Kenapa Penting Banget?</h3>
+                <p class="text-gray-700 mb-4">Bayangin deh, hidup sendirian di pulau terpencil tanpa ada orang lain. Pasti bosen banget, kan? Nah, sebagai manusia, kita ini emang nggak bisa hidup sendiri. Kita butuh orang lain buat ngobrol, berbagi, belajar, dan banyak hal lainnya. Aktivitas hubungan timbal balik antar individu, antara individu dengan kelompok, atau antar kelompok inilah yang disebut <strong>interaksi sosial</strong>. Jadi, bukan cuma sekadar ngomong, tapi ada aksi dan reaksi di dalamnya. Misalnya, kamu nyapa teman (aksi), terus temanmu balas nyapa (reaksi). Itu udah termasuk interaksi sosial, lho!</p>
+                <p class="text-gray-700">Interaksi sosial ini penting banget karena jadi dasar dari kehidupan kita bermasyarakat. Tanpa interaksi, nggak bakal ada yang namanya keluarga, sekolah, teman main, bahkan negara. Semua hal besar di dunia ini dimulai dari interaksi kecil antar manusia. Setiap obrolan ringan di kantin, diskusi sengit di kelas, sampai kerja sama bikin acara pensi, semuanya adalah bagian dari proses dinamis yang terus membentuk dan mengubah masyarakat kita.</p>
+                <h4 class="font-semibold text-md mt-4 mb-2">Contoh sehari-hari:</h4>
+                <ul class="list-disc list-inside text-gray-700 space-y-1">
+                    <li>Diskusi PR di grup WhatsApp kelas.</li>
+                    <li>Kamu nawar harga es teh di kantin.</li>
+                    <li>Kerja kelompok bikin mading sekolah bareng teman-teman sekelas.</li>
+                    <li>Kamu senyum dan bilang "pagi, Pak/Bu" ke guru yang ketemu di koridor.</li>
                 </ul>
             </div>
 
-            <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
-                <h3 class="text-2xl font-semibold mb-4 text-center">Profil Tanah: Mengintip Lapisan Tanah (Horizon)</h3>
-                <p class="text-center text-gray-600 mb-6">Bayangkan tanah itu seperti kue lapis! Setiap lapisan (horizon) punya ciri & fungsi beda. Arahkan kursor atau klik pada setiap horizon untuk melihat penjelasannya.</p>
-                <div id="soil-profile" class="w-full max-w-md mx-auto">
-                    <div data-info="Horizon O (Organik): Lapisan paling atas, kaya bahan organik (humus) dari sisa tumbuhan & hewan. Sumber nutrisi utama, warnanya gelap. Ibarat taburan meses/keju di atas kue." class="soil-horizon bg-yellow-900 text-white p-3 text-center cursor-pointer transition hover:bg-yellow-800 rounded-t-lg">Horizon O (Organik)</div>
-                    <div data-info="Horizon A (Topsoil/Tanah Atas): Campuran bahan organik & mineral. Lapisan paling subur, tempat utama akar tanaman pangan. Warna cenderung gelap." class="soil-horizon bg-amber-800 text-white p-6 text-center cursor-pointer transition hover:bg-amber-700">Horizon A (Topsoil)</div>
-                    <div data-info="Horizon E (Eluviasi/Pencucian): Tidak selalu ada. Lapisan pucat karena mineral halus (liat) & organik tercuci ke bawah." class="soil-horizon bg-orange-600 text-white p-4 text-center cursor-pointer transition hover:bg-orange-500">Horizon E (Eluviasi)</div>
-                    <div data-info="Horizon B (Subsoil/Akumulasi): Tempat penumpukan mineral (liat, besi) yang tercuci dari atas. Lebih padat, warna lebih cerah. Akar tanaman panjang bisa sampai sini." class="soil-horizon bg-orange-700 text-white p-8 text-center cursor-pointer transition hover:bg-orange-600">Horizon B (Subsoil)</div>
-                    <div data-info="Horizon C (Regolith): Bongkahan batuan induk yang mulai lapuk. Belum benar-benar jadi tanah." class="soil-horizon bg-orange-900 text-white p-10 text-center cursor-pointer transition hover:bg-orange-800">Horizon C (Regolith)</div>
-                    <div data-info="Horizon R (Bedrock/Batuan Induk): Lapisan paling bawah, batuan induk utuh & keras. Ibarat loyang kue." class="soil-horizon bg-gray-700 text-white p-4 text-center cursor-pointer transition hover:bg-gray-600 rounded-b-lg">Horizon R (Bedrock)</div>
-                </div>
-                <div id="soil-info-display" class="mt-6 p-4 bg-gray-100 rounded-lg text-center min-h-[80px] flex items-center justify-center">
-                    <p>Arahkan kursor/klik ke lapisan tanah untuk detail.</p>
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Syarat Wajib Biar Bisa Interaksi: Kontak Sosial dan Komunikasi</h3>
+                <p class="text-center text-gray-600 mb-6">Biar interaksi sosial bisa kejadian, ada dua syarat utama yang harus dipenuhi, yaitu kontak sosial dan komunikasi. Ibaratnya, dua ini adalah kunci buat membuka pintu pergaulan.</p>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="p-4 bg-orange-50 rounded-lg">
+                        <h4 class="font-semibold text-orange-800 mb-2">1. Kontak Sosial</h4>
+                        <p class="text-sm text-orange-700 mb-2">Langkah awal terjadinya hubungan. Nggak selalu sentuhan fisik, lho!</p>
+                        <ul class="list-disc list-inside text-sm text-orange-700 space-y-1">
+                            <li><strong>Kontak Primer:</strong> Langsung, tatap muka. Contoh: Ngobrol langsung, salaman.</li>
+                            <li><strong>Kontak Sekunder Langsung:</strong> Lewat perantara, pesan langsung diterima. Contoh: Telepon, chat, video call.</li>
+                            <li><strong>Kontak Sekunder Tidak Langsung:</strong> Butuh pihak ketiga. Contoh: Titip salam lewat teman, kirim paket.</li>
+                        </ul>
+                        <p class="text-xs text-orange-600 mt-2 italic">Di zaman medsos, kontak sekunder jadi dominan, tapi hati-hati miskomunikasi karena kurangnya bahasa tubuh ya!</p>
+                    </div>
+                    <div class="p-4 bg-teal-50 rounded-lg">
+                        <h4 class="font-semibold text-teal-800 mb-2">2. Komunikasi</h4>
+                        <p class="text-sm text-teal-700 mb-2">Proses penyampaian dan penerimaan pesan (ide, perasaan) biar ada saling pengaruh.</p>
+                        <p class="text-sm text-teal-700 mb-1">Elemen penting:</p>
+                        <ul class="list-disc list-inside text-sm text-teal-700 space-y-1">
+                            <li><strong>Pengirim (Komunikator)</strong></li>
+                            <li><strong>Penerima (Komunikan)</strong></li>
+                            <li><strong>Pesan (Message)</strong></li>
+                            <li><strong>Media (Channel):</strong> Suara, tulisan, gambar.</li>
+                            <li><strong>Umpan Balik (Feedback)</strong></li>
+                        </ul>
+                         <p class="text-sm text-teal-700 mt-2 mb-1">Jenis Komunikasi:</p>
+                         <ul class="list-disc list-inside text-sm text-teal-700 space-y-1">
+                            <li><strong>Verbal:</strong> Pakai kata-kata (lisan/tulisan).</li>
+                            <li><strong>Nonverbal:</strong> Bahasa tubuh, simbol (anggukan, lambaian tangan).</li>
+                        </ul>
+                        <p class="text-xs text-teal-600 mt-2 italic">Pesan dan media harus sama-sama dimengerti biar nggak miskom!</p>
+                    </div>
                 </div>
             </div>
-            
-            <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
-                 <h3 class="text-2xl font-semibold mb-4">Jenis Tanah di Indonesia & Manfaatnya</h3>
-                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="info-box"><strong>Tanah Vulkanis:</strong> Dari abu gunung api, subur (sayur, buah, kopi).</div>
-                    <div class="info-box"><strong>Tanah Aluvial:</strong> Endapan sungai, subur (padi, palawija).</div>
-                    <div class="info-box"><strong>Tanah Gambut (Organosol):</strong> Dari sisa tumbuhan di rawa, asam (nanas, sawit, perlu hati-hati).</div>
-                    <div class="info-box"><strong>Tanah Laterit:</strong> Tua, tercuci, kurang subur (alang-alang).</div>
-                    <div class="info-box"><strong>Tanah Lempung (Liat):</strong> Halus, lengket basah, keras kering (gerabah, genteng).</div>
-                    <div class="info-box"><strong>Tanah Pasir:</strong> Kasar, mudah tembus air, kurang subur (bahan bangunan).</div>
+
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Faktor Pendorong Interaksi Sosial</h3>
+                <p class="text-center text-gray-600 mb-6">Pernah nggak kamu tiba-tiba pengen niru gaya rambut artis idola? Atau jadi semangat belajar karena lihat teman-temanmu rajin? Nah, itu semua ada faktor pendorongnya!</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="p-4 bg-rose-50 rounded-lg">
+                        <h4 class="font-semibold text-rose-800">Imitasi</h4>
+                        <p class="text-sm text-rose-700">Tindakan meniru orang lain (perilaku, gaya bicara, penampilan). Contoh: Adikmu niru gaya superhero, kamu pakai istilah gaul baru dari teman.</p>
+                    </div>
+                    <div class="p-4 bg-sky-50 rounded-lg">
+                        <h4 class="font-semibold text-sky-800">Sugesti</h4>
+                        <p class="text-sm text-sky-700">Terpengaruh pandangan orang lain yang kita anggap hebat/berwibawa tanpa banyak mikir. Contoh: Pengen coba makanan dari review food vlogger, percaya nasihat guru BK.</p>
+                    </div>
+                    <div class="p-4 bg-emerald-50 rounded-lg">
+                        <h4 class="font-semibold text-emerald-800">Identifikasi</h4>
+                        <p class="text-sm text-emerald-700">Keinginan kuat untuk menjadi sama persis dengan idola/role model. Contoh: Ngefans atlet sampai niru gaya hidup sehatnya.</p>
+                    </div>
+                    <div class="p-4 bg-amber-50 rounded-lg">
+                        <h4 class="font-semibold text-amber-800">Simpati</h4>
+                        <p class="text-sm text-amber-700">Ikut merasakan perasaan orang lain (biasanya kesedihan) dan peduli. Contoh: Ikut sedih teman kehilangan kucing.</p>
+                    </div>
+                     <div class="p-4 bg-violet-50 rounded-lg">
+                        <h4 class="font-semibold text-violet-800">Empati</h4>
+                        <p class="text-sm text-violet-700">Lebih dalam dari simpati, kita seolah-olah mengalami sendiri apa yang dirasakan orang lain. Contoh: Ikut panik dan bantu cari kucing teman yang hilang.</p>
+                    </div>
+                     <div class="p-4 bg-gray-100 rounded-lg">
+                        <h4 class="font-semibold text-gray-800">Motivasi</h4>
+                        <p class="text-sm text-gray-700">Dorongan dari dalam atau luar diri untuk melakukan sesuatu. Contoh: Ikut ekskul karena teman (luar), rajin belajar karena pengen pintar (dalam).</p>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 mt-4 italic text-center">Faktor-faktor ini seringkali nggak berdiri sendiri, lho. Bisa jadi, dalam satu interaksi, ada beberapa faktor yang bekerja barengan. Di era digital, medsos dan influencer punya peran gede memicu ini, jadi penting buat berpikir kritis!</p>
+            </div>
+
+            <div class="content-card p-6">
+                 <h3 class="font-bold text-xl mb-4 text-center">Bentuk-Bentuk Interaksi Sosial: Ada yang Bikin Akur, Ada yang Bikin Tegang!</h3>
+                 <p class="text-center text-gray-600 mb-6">Interaksi sosial itu nggak selalu mulus. Ada yang ngarah ke persatuan (Asosiatif), ada juga yang ngarah ke perpecahan (Disosiatif). Keduanya adalah bagian dari dinamika kehidupan bermasyarakat.</p>
+                 <div class="grid md:grid-cols-2 gap-8">
+                     <div class="space-y-4">
+                         <h4 class="text-lg font-semibold text-center text-green-700">🤝 Asosiatif (Yang Bikin Akur)</h4>
+                         <div class="p-4 bg-green-50 rounded-lg border-l-4 border-green-500 sub-card">
+                            <h5 class="font-bold">Kerja Sama (Cooperation)</h5>
+                            <p class="text-sm">Usaha bareng-bareng buat mencapai tujuan bersama. Contoh: Piket kelas, patungan beli kado.</p>
+                         </div>
+                          <div class="p-4 bg-green-50 rounded-lg border-l-4 border-green-500 sub-card">
+                            <h5 class="font-bold">Akomodasi (Accommodation)</h5>
+                            <p class="text-sm">Upaya meredakan konflik atau ketegangan agar tercapai kestabilan. Contoh: Guru menengahi siswa yang bertengkar, musyawarah menentukan tujuan study tour.</p>
+                         </div>
+                         <div class="p-4 bg-green-50 rounded-lg border-l-4 border-green-500 sub-card">
+                            <h5 class="font-bold">Asimilasi (Assimilation)</h5>
+                            <p class="text-sm">Proses peleburan dua kebudayaan atau lebih jadi satu kebudayaan baru, budaya asli bisa hilang. Contoh: Perkawinan beda suku yang lama-lama menciptakan tradisi keluarga baru campuran.</p>
+                         </div>
+                         <div class="p-4 bg-green-50 rounded-lg border-l-4 border-green-500 sub-card">
+                            <h5 class="font-bold">Akulturasi (Acculturation)</h5>
+                            <p class="text-sm">Unsur budaya asing diterima dan diolah, tapi budaya aslinya nggak hilang. Contoh: Masjid Menara Kudus (campuran Islam-Hindu), musik keroncong (Melayu-Portugis).</p>
+                         </div>
+                     </div>
+                     <div class="space-y-4">
+                         <h4 class="text-lg font-semibold text-center text-red-700">⚔️ Disosiatif (Yang Bikin Tegang)</h4>
+                          <div class="p-4 bg-red-50 rounded-lg border-l-4 border-red-500 sub-card">
+                            <h5 class="font-bold">Persaingan (Competition)</h5>
+                            <p class="text-sm">Lomba meraih sesuatu yang terbatas tanpa kekerasan. Contoh: Lomba cerdas cermat, audisi band sekolah.</p>
+                         </div>
+                          <div class="p-4 bg-red-50 rounded-lg border-l-4 border-red-500 sub-card">
+                            <h5 class="font-bold">Kontravensi (Contravention)</h5>
+                            <p class="text-sm">Sikap tidak suka yang tersembunyi, di antara persaingan dan konflik. Contoh: Menyebar gosip, menghasut, ngomongin di belakang.</p>
+                         </div>
+                          <div class="p-4 bg-red-50 rounded-lg border-l-4 border-red-500 sub-card">
+                            <h5 class="font-bold">Pertikaian atau Konflik (Conflict)</h5>
+                            <p class="text-sm">Upaya mencapai tujuan dengan menantang atau menyerang lawan, bisa pakai kekerasan. Contoh: Debat panas di medsos, tawuran.</p>
+                         </div>
+                     </div>
                  </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-lg">
-                <h3 class="text-2xl font-semibold mb-4">Pentingnya Tanah & Perannya sebagai Penghubung Geosfer</h3>
-                <p class="text-gray-600 mb-2">Tanah sangat vital karena:</p>
-                <ul class="list-disc list-inside space-y-1 text-gray-700 mb-4">
-                    <li>Tempat tumbuh tanaman (sumber pangan).</li>
-                    <li>Penyaring air alami (menghasilkan air tanah).</li>
-                    <li>Rumah bagi jutaan makhluk hidup (bakteri, cacing).</li>
-                    <li>Bahan baku industri (gerabah, batu bata).</li>
-                    <li>Pijakan kita semua.</li>
-                </ul>
-                <p class="text-gray-600">Tanah adalah <strong>jembatan antar geosfer</strong>. Pembentukannya melibatkan litosfer (batuan), atmosfer (iklim), hidrosfer (air), dan biosfer (organisme). Kondisi tanah mencerminkan kesehatan lingkungan secara keseluruhan.</p>
+                 <p class="text-xs text-gray-500 mt-4 italic text-center">Bentuk interaksi ini nggak kaku, bisa berubah dari satu bentuk ke bentuk lain. Dinamika sosial itu cair!</p>
             </div>
         </section>
-        
-        <!-- ATMOSFER -->
-        <section id="atmosfer" class="content-section">
-            <h2 class="text-3xl font-bold mb-2">☁️ Atmosfer: Selimut Gaib Pelindung Bumi</h2>
-            <p class="text-lg text-gray-600 mb-6">Atmosfer adalah lapisan gas yang menyelimuti Bumi. Fungsinya seperti jaket super canggih: melindungi dari panas matahari, menjaga kehangatan malam, tameng meteor, dan memberi kita oksigen.</p>
-            <p class="text-gray-600 mb-4">Komposisi utama: <strong>Nitrogen (78%)</strong>, <strong>Oksigen (21%)</strong>, sisanya Argon, Karbon Dioksida (CO2), uap air, dll.</p>
 
-             <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
-                <h3 class="text-2xl font-semibold mb-4 text-center">Lapisan-Lapisan Atmosfer (Seperti Gedung Pencakar Langit)</h3>
-                <p class="text-center text-gray-600 mb-6">Setiap "lantai" punya ciri khas. Klik untuk info detail!</p>
-                <div class="space-y-3">
-                    <div class="interactive-diagram-item p-3 border rounded-lg" onclick="showAtmosInfo('Troposfer (0-18 km): Lapisan terbawah, tempat kita hidup & semua cuaca terjadi (awan, hujan, badai). Makin ke atas makin dingin. Pesawat terbang di sini.')">
-                        <h4 class="font-semibold">1. Troposfer 🌦️</h4>
-                        <p class="text-sm">Tempat terjadinya cuaca</p>
-                    </div>
-                     <div class="interactive-diagram-item p-3 border rounded-lg" onclick="showAtmosInfo('Stratosfer (12/18-50 km): Ada lapisan ozon (O3) pelindung sinar UV. Udara lebih tipis & kering. Pesawat jet super cepat terbang di sini.')">
-                        <h4 class="font-semibold">2. Stratosfer ☂️</h4>
-                        <p class="text-sm">Rumah bagi Lapisan Ozon</p>
-                    </div>
-                    <div class="interactive-diagram-item p-3 border rounded-lg" onclick="showAtmosInfo('Mesosfer (50-85 km): Suhu paling dingin. Satpam Bumi! Meteor terbakar habis di sini karena gesekan.')">
-                        <h4 class="font-semibold">3. Mesosfer ☄️</h4>
-                        <p class="text-sm">Benteng pelindung dari meteor</p>
-                    </div>
-                     <div class="interactive-diagram-item p-3 border rounded-lg" onclick="showAtmosInfo('Termosfer/Ionosfer (85-600 km): Suhu sangat panas (ribuan °C) karena radiasi, tapi tak terasa karena partikel jarang. Memantulkan gelombang radio (komunikasi). Tempat terjadinya aurora cantik.')">
-                        <h4 class="font-semibold">4. Termosfer/Ionosfer ✨</h4>
-                        <p class="text-sm">Panggung Aurora & pemantul radio</p>
-                    </div>
-                    <div class="interactive-diagram-item p-3 border rounded-lg" onclick="showAtmosInfo('Eksosfer (>600 km): Lapisan terluar, udara sangat tipis, partikel gas bisa lepas ke angkasa. Satelit mengorbit di sini.')">
-                        <h4 class="font-semibold">5. Eksosfer 🛰️</h4>
-                        <p class="text-sm">Gerbang menuju luar angkasa</p>
-                    </div>
-                </div>
-                <div id="atmos-info-display" class="mt-6 p-4 bg-gray-100 rounded-lg text-center min-h-[80px] flex items-center justify-center">
-                    <p>Klik salah satu lapisan untuk melihat infonya.</p>
-                </div>
-             </div>
-
-             <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
-                <h3 class="text-2xl font-semibold mb-4">Cuaca vs. Iklim: Jangan Tertukar!</h3>
-                <div class="analogy-box">
-                    <p><strong>Analogi Mood vs. Karakter:</strong> Cuaca itu seperti <i>mood</i> (suasana hati) harian kita, bisa berubah cepat. Iklim itu seperti karakter (kepribadian) kita, cenderung stabil & jadi ciri khas.</p>
-                </div>
-                <ul class="list-disc list-inside space-y-2 text-gray-700">
-                    <li><strong>Cuaca:</strong> Kondisi udara di suatu tempat pada waktu singkat (jam/hari), cepat berubah. Contoh: "Sore ini Jogja hujan deras."</li>
-                    <li><strong>Iklim:</strong> Pola cuaca rata-rata di wilayah luas dalam jangka waktu lama (minimal 30 tahun). Contoh: "Indonesia beriklim tropis."</li>
-                </ul>
-                <h4 class="text-xl font-semibold mt-6 mb-3">Unsur Pembentuk Cuaca & Iklim:</h4>
-                <div class="grid md:grid-cols-2 gap-4 text-sm">
-                    <p><strong>Penyinaran Matahari:</strong> Sumber energi utama.</p>
-                    <p><strong>Suhu Udara (Termometer):</strong> Panas/dinginnya udara.</p>
-                    <p><strong>Tekanan Udara (Barometer):</strong> Berat kolom udara. Analogi: tumpukan buku/menyelam.</p>
-                    <p><strong>Kelembapan Udara (Higrometer):</strong> Kandungan uap air. Analogi: spons basah.</p>
-                    <p><strong>Angin (Anemometer):</strong> Udara bergerak dari tekanan tinggi ke rendah. Analogi: balon ditiup/pintu terbuka.</p>
-                    <p><strong>Awan:</strong> Kumpulan titik air/kristal es hasil kondensasi.</p>
-                    <p><strong>Curah Hujan:</strong> Air jatuh dari awan (hujan, salju, es).</p>
-                </div>
-             </div>
-             <div class="bg-white p-6 rounded-xl shadow-lg">
-                <h3 class="text-2xl font-semibold mb-4">Fenomena Atmosfer Sehari-hari & Penjelasannya</h3>
-                <ul class="list-disc list-inside space-y-3 text-gray-700">
-                    <li><strong>Pelangi:</strong> Cahaya matahari dibiaskan & dipantulkan titik air sisa hujan.</li>
-                    <li><strong>Angin Darat & Angin Laut:</strong> Terjadi karena perbedaan kecepatan pemanasan/pendinginan daratan & lautan. Siang: angin laut (ke darat). Malam: angin darat (ke laut). Penting bagi nelayan.</li>
-                    <li><strong>Kenapa Puncak dingin, Jakarta panas?</strong> Karena di tempat tinggi (Puncak), udara lebih tipis & tekanan rendah, tak bisa menyimpan panas dengan baik. Sumber panas utama atmosfer adalah pantulan dari permukaan Bumi, yang lebih efektif diserap udara padat di dataran rendah (Jakarta).</li>
-                    <li><strong>Kenapa Indonesia 2 musim (hujan & kemarau)?</strong> Karena letak di khatulistiwa & pengaruh Angin Muson.
-                        <ul class="list-circle list-inside ml-4 mt-1">
-                            <li><strong>Angin Muson Barat (Oktober-April):</strong> Dari Asia, bawa banyak uap air ➔ Musim Hujan.</li>
-                            <li><strong>Angin Muson Timur (April-Oktober):</strong> Dari Australia (kering) ➔ Musim Kemarau.</li>
-                        </ul>
-                        Negara 4 musim biasanya di lintang sedang/subtropis, intensitas matahari & suhu berubah drastis sepanjang tahun.
-                    </li>
-                </ul>
-                <p class="mt-4 text-gray-600">Atmosfer adalah sistem energi kompleks yang mengolah energi matahari, menggerakkan cuaca dan iklim. Gangguan seperti gas rumah kaca bisa mempengaruhi keseimbangan ini.</p>
-             </div>
-        </section>
-
-        <!-- HIDROSFER -->
-        <section id="hidrosfer" class="content-section">
-            <h2 class="text-3xl font-bold mb-2">💧 Hidrosfer: Keajaiban Dunia Air</h2>
-            <p class="text-lg text-gray-600 mb-6">Hidrosfer ("hidro" = air) adalah semua air di Bumi (cair, padat, gas). Sekitar 70-72% permukaan Bumi tertutup air. Ini seperti sistem peredaran air raksasa planet kita.</p>
-
-            <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
-                <h3 class="text-2xl font-semibold mb-4 text-center">Siklus Hidrologi (Siklus Air): Perjalanan Air Tanpa Henti</h3>
-                <p class="text-center text-gray-600 mb-4">Air terus bergerak & berubah wujud. Bayangkan air seperti turis yang keliling dunia! Klik tahapan untuk info.</p>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
-                    <div class="p-3 bg-blue-100 rounded-lg cursor-pointer hover:bg-blue-200" onclick="showHidroInfo('Evaporasi', 'Panas matahari mengubah air (laut, sungai, danau) jadi uap air ke atmosfer. Analogi: jemuran basah jadi kering.')">
-                        <p class="text-3xl">☀️💧💨</p><p class="font-semibold mt-1">Evaporasi</p>
-                    </div>
-                    <div class="p-3 bg-green-100 rounded-lg cursor-pointer hover:bg-green-200" onclick="showHidroInfo('Transpirasi', 'Tumbuhan mengeluarkan uap air melalui daun/batang. Seperti tumbuhan \"berkeringat\".')">
-                        <p class="text-3xl">🌳💧💨</p><p class="font-semibold mt-1">Transpirasi</p>
-                    </div>
-                    <div class="p-3 bg-sky-100 rounded-lg cursor-pointer hover:bg-sky-200" onclick="showHidroInfo('Sublimasi', 'Es/salju (padat) langsung jadi uap air (gas) tanpa mencair. Terjadi di tempat dingin & tekanan rendah.')">
-                        <p class="text-3xl">❄️💨</p><p class="font-semibold mt-1">Sublimasi</p>
-                    </div>
-                    <div class="p-3 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200" onclick="showHidroInfo('Kondensasi', 'Uap air di atmosfer mendingin, jadi titik air/kristal es, membentuk awan. Analogi: embun di gelas es.')">
-                        <p class="text-3xl">💨❄️☁️</p><p class="font-semibold mt-1">Kondensasi</p>
-                    </div>
-                     <div class="p-3 bg-indigo-100 rounded-lg cursor-pointer hover:bg-indigo-200" onclick="showHidroInfo('Adveksi', 'Awan bergerak horizontal karena tiupan angin.')">
-                        <p class="text-3xl">🌬️☁️➡️</p><p class="font-semibold mt-1">Adveksi</p>
-                    </div>
-                    <div class="p-3 bg-cyan-100 rounded-lg cursor-pointer hover:bg-cyan-200" onclick="showHidroInfo('Presipitasi', 'Air jatuh dari awan ke Bumi (hujan, salju, es). Analogi: semprotan air raksasa.')">
-                        <p class="text-3xl">🌧️🌨️</p><p class="font-semibold mt-1">Presipitasi</p>
-                    </div>
-                    <div class="p-3 bg-amber-100 rounded-lg cursor-pointer hover:bg-amber-200" onclick="showHidroInfo('Infiltrasi & Perkolasi', 'Air hujan meresap ke tanah (infiltrasi), lalu bergerak lebih dalam (perkolasi) jadi air tanah. Analogi: air meresap ke spons.')">
-                        <p class="text-3xl">💧 जमीन</p><p class="font-semibold mt-1">Infiltrasi & Perkolasi</p>
-                    </div>
-                    <div class="p-3 bg-teal-100 rounded-lg cursor-pointer hover:bg-teal-200" onclick="showHidroInfo('Run-off (Limpasan Permukaan)', 'Air hujan tak meresap, mengalir di permukaan membentuk sungai, kembali ke laut.')">
-                        <p class="text-3xl">🏞️➡️🌊</p><p class="font-semibold mt-1">Run-off</p>
-                    </div>
-                </div>
-                 <div id="hidro-info-display" class="mt-6 p-4 bg-gray-100 rounded-lg min-h-[100px] flex flex-col items-center justify-center">
-                    <h4 id="hidro-title" class="font-bold text-lg mb-1">Info Siklus Air</h4>
-                    <p id="hidro-desc">Klik salah satu tahap untuk melihat penjelasannya.</p>
-                </div>
-                <p class="text-sm text-gray-600 mt-4">Jenis siklus: <strong>Pendek</strong> (laut-awan-hujan di laut), <strong>Sedang</strong> (laut-awan-hujan di darat-sungai-laut), <strong>Panjang</strong> (laut-awan-salju/es di gunung-gletser-cair-sungai-laut).</p>
+        <section id="modul2" class="module-section space-y-12">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-gray-800">Modul 2: Nilai dan Norma: Aturan Main Biar Hidup Nyaman</h2>
+                <p class="mt-2 text-gray-600 max-w-2xl mx-auto">Seperti main game, hidup di masyarakat juga punya aturan main. Aturan tak tertulis ini kita sebut nilai dan norma. Ini penting banget biar hidup kita bareng-bareng jadi lebih teratur, nyaman, dan nggak saling sikut-sikutan. Yuk, kita bedah satu-satu!</p>
             </div>
 
-            <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
-                <h3 class="text-2xl font-semibold mb-4">Jenis-Jenis "Rumah Air" di Indonesia & Manfaatnya</h3>
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div>
-                        <h4 class="text-xl font-semibold mb-2">Air Permukaan:</h4>
-                        <ul class="list-disc list-inside space-y-1 text-gray-700">
-                            <li><strong>Sungai:</strong> Aliran air tawar (hulu ke hilir). Manfaat: air baku, irigasi, transportasi, PLTA, habitat ikan.</li>
-                            <li><strong>Danau/Waduk:</strong> Cekungan air. Manfaat: air baku, irigasi, budidaya ikan, wisata, pengendali banjir, PLTA.</li>
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Nilai Sosial: Apa Sih yang Kita Anggap Penting dan Berharga?</h3>
+                <p class="text-gray-700 mb-2"><strong>Nilai sosial</strong> itu adalah segala sesuatu yang dianggap baik, penting, berharga, pantas, dan berguna bagi kehidupan manusia dalam masyarakat, sehingga dijadikan pedoman dalam bertingkah laku. Nilai ini sifatnya abstrak, adanya di pikiran dan perasaan kita, dan biasanya kita pelajari dari lingkungan.</p>
+                <h4 class="font-semibold text-md mt-3 mb-1">Ciri-ciri Nilai Sosial:</h4>
+                <ul class="list-disc list-inside text-gray-700 text-sm space-y-1">
+                    <li>Dipelajari, bukan bawaan lahir (Contoh: Jujur itu baik karena diajarin).</li>
+                    <li>Diwariskan dari generasi ke generasi.</li>
+                    <li>Beda-beda antar masyarakat, bahkan antar individu (Contoh: Arti "sukses" bisa beda).</li>
+                    <li>Nggak statis, bisa berubah seiring zaman.</li>
+                    <li>Mengikat, kita terdorong mengikutinya.</li>
+                    <li>Melibatkan emosi (bangga kalau diapresiasi, marah kalau dilanggar).</li>
+                </ul>
+                <p class="text-sm text-gray-700 mt-3">Ada juga <strong>nilai yang mendarah daging (internalized value)</strong>, yaitu nilai yang udah jadi bagian kepribadian kita, dilakukan tanpa mikir panjang. Contoh: Refleks bilang "permisi".</p>
+            </div>
+
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Jenis-Jenis Nilai</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="p-4 bg-indigo-50 rounded-lg">
+                        <h4 class="font-semibold text-indigo-800">Nilai Material</h4>
+                        <p class="text-sm text-indigo-700">Untuk kebutuhan fisik/jasmani. Contoh: Makanan, pakaian, rumah.</p>
+                    </div>
+                    <div class="p-4 bg-lime-50 rounded-lg">
+                        <h4 class="font-semibold text-lime-800">Nilai Vital</h4>
+                        <p class="text-sm text-lime-700">Untuk melakukan aktivitas. Contoh: Motor buat ojek, laptop buat belajar.</p>
+                    </div>
+                    <div class="p-4 bg-pink-50 rounded-lg">
+                        <h4 class="font-semibold text-pink-800">Nilai Kerohanian</h4>
+                        <p class="text-sm text-pink-700 mb-2">Untuk kebutuhan batin/spiritual.</p>
+                        <ul class="list-disc list-inside text-xs text-pink-600 space-y-1">
+                            <li><strong>Kebenaran (Logika):</strong> Dari akal, bisa dibuktikan. (1+1=2).</li>
+                            <li><strong>Keindahan (Estetika):</strong> Dari perasaan indah. (Suka lagu merdu).</li>
+                            <li><strong>Kebaikan (Moral/Etika):</strong> Dari hati nurani baik/buruk. (Nolong teman).</li>
+                            <li><strong>Religius (Ketuhanan):</strong> Dari keyakinan pada Tuhan. (Beribadah).</li>
                         </ul>
                     </div>
-                    <div>
-                        <h4 class="text-xl font-semibold mb-2">Air Tanah:</h4>
-                        <p class="text-gray-700">Tersimpan di bawah permukaan, lebih bersih. Manfaat: air minum (sumur), irigasi.</p>
-                    </div>
-                    <div>
-                        <h4 class="text-xl font-semibold mb-2">Laut:</h4>
-                        <p class="text-gray-700">Air asin terluas. Manfaat: garam, transportasi, sumber ikan & hasil laut, wisata, potensi energi terbarukan.</p>
-                    </div>
-                     <div>
-                        <h4 class="text-xl font-semibold mb-2">Rawa:</h4>
-                        <p class="text-gray-700">Dataran rendah tergenang. Manfaat: habitat khas (bakau, nipah, ikan gabus, buaya), hutan bakau penahan abrasi.</p>
-                    </div>
-                     <div>
-                        <h4 class="text-xl font-semibold mb-2">Air Hujan:</h4>
-                        <p class="text-gray-700">Langsung dari langit. Manfaat: sumber air alternatif (jika diolah), mengisi air tanah, menyiram tanaman.</p>
-                    </div>
                 </div>
-            </div>
-            <div class="bg-white p-6 rounded-xl shadow-lg">
-                <h3 class="text-2xl font-semibold mb-4">Jaga Air Kita! Konservasi Air & Peran Air Lainnya</h3>
-                <p class="text-gray-600 mb-2">Air bersih terbatas, jadi hematlah! Tips:</p>
-                <ul class="list-disc list-inside space-y-1 text-gray-700 mb-4">
-                    <li>Matikan keran saat tidak dipakai. Perbaiki keran bocor.</li>
-                    <li>Gunakan air bekas cucian (tanpa sabun) untuk menyiram. Tampung air hujan.</li>
-                    <li>Di sekolah: hemat air toilet, lapor keran rusak, buat biopori, tanam pohon.</li>
-                </ul>
-                <p class="text-gray-600">Air juga <strong>agen perubahan bentang alam</strong> (mengukir lembah, memahat tebing) dan <strong>"kurir global"</strong> (polusi bisa menyebar jauh). Menjaga kualitas air penting untuk seluruh planet.</p>
-            </div>
-        </section>
-
-        <!-- BIOSFER -->
-        <section id="biosfer" class="content-section">
-            <h2 class="text-3xl font-bold mb-2">🐅 Biosfer: Rumah Kita Semua, Para Makhluk Hidup!</h2>
-            <p class="text-lg text-gray-600 mb-6">Biosfer ("bios" = hidup) adalah lapisan di Bumi tempat semua makhluk hidup tinggal (bakteri, jamur, tumbuhan, hewan, manusia). Seperti rumah super besar atau kota metropolis yang sibuk.</p>
-            <p class="text-gray-600 mb-4">Persebaran makhluk hidup dipengaruhi: iklim, keadaan tanah (edafik), relief, dan manusia (biotik).</p>
-
-             <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
-                <h3 class="text-2xl font-semibold mb-4 text-center">Keanekaragaman Hayati (Biodiversitas)</h3>
-                <div class="grid md:grid-cols-3 gap-6 text-center">
-                    <div class="p-4 border rounded-lg">
-                        <h4 class="font-semibold text-lg">🧬 Keanekaragaman Gen</h4>
-                        <p class="text-sm mt-2">Variasi dalam 1 spesies (karena beda gen). Analogi: teman sekelas beda rambut/kulit; bunga mawar beda warna.</p>
-                    </div>
-                    <div class="p-4 border rounded-lg">
-                        <h4 class="font-semibold text-lg">🐾 Keanekaragaman Jenis (Spesies)</h4>
-                        <p class="text-sm mt-2">Variasi antar spesies beda (mungkin 1 famili). Analogi: keluarga kucing (harimau, singa, kucing kampung); keluarga palem (kelapa, aren, pinang).</p>
-                    </div>
-                    <div class="p-4 border rounded-lg">
-                        <h4 class="font-semibold text-lg">🏞️ Keanekaragaman Ekosistem</h4>
-                        <p class="text-sm mt-2">Variasi habitat & komunitas makhluk hidupnya. Analogi: komplek perumahan dengan tipe beda (pantai, gunung, sawah, hutan hujan, gurun, terumbu karang).</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
-                <h3 class="text-2xl font-semibold mb-4 text-center">Flora & Fauna Unik Indonesia (Megabiodiversitas)</h3>
-                <p class="text-center text-gray-600 mb-2">Indonesia kaya hayati! Dibagi 3 zona oleh Garis Wallace & Weber:</p>
-                <div class="grid md:grid-cols-3 gap-4 text-sm">
-                    <div class="p-3 bg-orange-100 rounded"><strong>Zona Asiatis (Barat):</strong> Sumatera, Jawa, Kalimantan, Bali. Mirip Asia. Flora: meranti, karet. Fauna: gajah, harimau, orangutan.</div>
-                    <div class="p-3 bg-purple-100 rounded"><strong>Zona Peralihan (Wallacea/Tengah):</strong> Sulawesi, Nusa Tenggara, Maluku. Unik & banyak endemik! Flora: cendana, eboni. Fauna: komodo, anoa, babirusa, maleo.</div>
-                    <div class="p-3 bg-green-100 rounded"><strong>Zona Australis (Timur):</strong> Papua & sekitar. Mirip Australia. Flora: eucalyptus, anggrek. Fauna: kanguru pohon, cendrawasih, kasuari.</div>
-                </div>
-                <p class="text-center text-gray-600 mt-4 mb-6">Arahkan kursor pada setiap zona di peta untuk melihat contoh hewannya!</p>
-                <div id="indonesia-map" class="relative w-full max-w-2xl mx-auto aspect-video bg-gray-200 rounded-lg overflow-hidden bg-center bg-contain bg-no-repeat" style="background-image: url('https://i.imgur.com/uG9xGKM.png');">
-                    <div class="zone absolute top-0 left-0 w-[45%] h-full opacity-25 hover:opacity-40 bg-orange-400 transition-opacity duration-300" data-fauna="Tipe Asiatis: Gajah, Harimau, Orangutan, Badak. Mirip fauna di Benua Asia."></div>
-                    <div class="zone absolute top-0 left-[45%] w-[20%] h-full opacity-25 hover:opacity-40 bg-purple-400 transition-opacity duration-300" data-fauna="Tipe Peralihan (Wallacea): Komodo, Anoa, Babirusa. Hewan endemik yang hanya ada di Indonesia!"></div>
-                    <div class="zone absolute top-0 right-0 w-[35%] h-full opacity-25 hover:opacity-40 bg-green-400 transition-opacity duration-300" data-fauna="Tipe Australis: Kanguru Pohon, Cendrawasih, Kasuari. Mirip fauna di Benua Australia."></div>
-                </div>
-                 <div id="fauna-info-display" class="mt-6 p-4 bg-gray-100 rounded-lg text-center min-h-[60px] flex items-center justify-center">
-                    <p>Arahkan kursor ke zona berwarna pada peta.</p>
-                </div>
+                 <p class="text-sm text-gray-700 mt-4">Ada juga pembagian nilai berdasarkan cirinya: <strong>Nilai Dominan</strong> (dianggap paling penting oleh banyak orang, misal gotong royong) dan <strong>Nilai yang Mendarah Daging</strong> (sudah jadi kebiasaan).</p>
             </div>
             
-            <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
-                <h3 class="text-2xl font-semibold mb-4">Adaptasi Keren Flora Fauna Khas Indonesia</h3>
-                <ul class="list-disc list-inside space-y-3 text-gray-700">
-                    <li><strong>Rafflesia Arnoldii:</strong> Mengeluarkan bau busuk & panas (fisiologi) untuk menarik lalat penyerbuk. Parasit total, tak berakar/batang/daun sejati (morfologi & tingkah laku).</li>
-                    <li><strong>Komodo:</strong> Air liur mematikan (bakteri & racun), penciuman tajam, kulit tebal (fisiologi & morfologi). Pemburu sabar, kamuflase (tingkah laku).</li>
-                    <li><strong>Orangutan:</strong> Lengan panjang & kuat untuk berayun (brakhiasi), mata adaptasi kanopi (morfologi). Frugivora (pemakan buah, penyebar biji), cerdas, pakai alat (tingkah laku & fisiologi).</li>
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Norma Sosial: Panduan Biar Nggak Salah Langkah</h3>
+                <p class="text-gray-700 mb-2">Kalau nilai itu "apa yang baik", <strong>norma sosial</strong> itu "aturan main" atau panduan konkret gimana cara berperilaku sesuai nilai itu. Tujuannya biar hidup teratur, tertib, dan adil. Pelanggaran biasanya ada sanksinya.</p>
+                <h4 class="font-semibold text-md mt-3 mb-1">Fungsi Norma Sosial:</h4>
+                <ul class="list-disc list-inside text-gray-700 text-sm space-y-1">
+                    <li>Panduan bersikap.</li>
+                    <li>Menciptakan ketertiban dan keadilan.</li>
+                    <li>Alat kontrol sosial.</li>
+                    <li>Menjaga stabilitas dan harmoni.</li>
+                    <li>Dasar pemberian sanksi.</li>
+                </ul>
+                <h4 class="font-semibold text-md mt-3 mb-1">Ciri-ciri Norma Sosial:</h4>
+                <ul class="list-disc list-inside text-gray-700 text-sm space-y-1">
+                    <li>Seringnya tidak tertulis (sopan santun), ada juga tertulis (tata tertib).</li>
+                    <li>Hasil kesepakatan bersama.</li>
+                    <li>Harus ditaati bersama.</li>
+                    <li>Bisa berubah seiring zaman.</li>
                 </ul>
             </div>
 
-            <div class="bg-white p-6 rounded-xl shadow-lg">
-                <h3 class="text-2xl font-semibold mb-4">Pentingnya Biosfer & Keanekaragaman Hayati</h3>
-                <p class="text-gray-600 mb-2">Kenapa harus peduli?</p>
-                <ul class="list-disc list-inside space-y-1 text-gray-700 mb-4">
-                    <li>Sumber Pangan, Obat-obatan.</li>
-                    <li>Menjaga Keseimbangan Ekosistem (siklus air, serap CO2, hasilkan O2).</li>
-                    <li>Sumber Ekonomi & Pariwisata.</li>
-                    <li>Nilai Budaya & Estetika.</li>
-                </ul>
-                <div class="analogy-box">
-                    <p><strong>Analogi Kehidupan Kota & Rantai Makanan:</strong> Produsen (tumbuhan) = "pabrik makanan". Konsumen (hewan) = "warga". Dekomposer (bakteri, jamur) = "pasukan kebersihan/daur ulang". Rantai makanan = "siapa makan siapa", menunjukkan aliran energi.</p>
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Macam-Macam Norma</h3>
+                <p class="text-center text-gray-600 mb-4">Norma itu ada tingkatannya berdasarkan daya ikat dan sumbernya.</p>
+                <h4 class="font-semibold text-md mb-2 text-center">1. Berdasarkan Tingkat Daya Ikatnya (Klik untuk detail!)</h4>
+                <div class="space-y-2 max-w-lg mx-auto" id="norma-pyramid">
+                    <div class="pyramid-level bg-teal-100 text-teal-800 p-3 rounded-lg text-center cursor-pointer hover:bg-teal-200 transition" data-info="Paling lemah. Sanksinya cuma dianggap aneh. Contoh: Cara makan berbunyi, cara berpakaian kurang pas.">
+                        <h4 class="font-bold">Cara (Usage)</h4>
+                    </div>
+                    <div class="pyramid-level bg-teal-200 text-teal-800 p-3 rounded-lg text-center cursor-pointer hover:bg-teal-300 transition" data-info="Lebih kuat. Perbuatan yang diulang-ulang. Sanksinya teguran atau dianggap tidak sopan. Contoh: Memberi salam, cium tangan orang tua.">
+                        <h4 class="font-bold">Kebiasaan (Folkways)</h4>
+                    </div>
+                    <div class="pyramid-level bg-teal-300 text-teal-800 p-3 rounded-lg text-center cursor-pointer hover:bg-teal-400 transition" data-info="Kuat. Berkaitan dengan moral/etika/agama. Pelanggaran dianggap serius. Sanksi bisa lebih berat, misal sanksi sosial. Contoh: Larangan mencuri, berbohong yang merugikan.">
+                        <h4 class="font-bold">Tata Kelakuan (Mores)</h4>
+                    </div>
+                    <div class="pyramid-level bg-teal-400 text-teal-800 p-3 rounded-lg text-center cursor-pointer hover:bg-teal-500 transition" data-info="Sangat kuat, diwariskan turun-temurun, susah diubah. Sanksi adat bisa sangat berat, misal dikucilkan. Contoh: Aturan upacara pernikahan adat.">
+                        <h4 class="font-bold">Adat Istiadat (Custom)</h4>
+                    </div>
+                    <div class="pyramid-level bg-teal-500 text-white p-3 rounded-lg text-center cursor-pointer hover:bg-teal-600 transition" data-info="Paling kuat dan memaksa. Aturan tertulis dari negara. Sanksinya denda atau penjara. Contoh: Wajib membayar pajak, dilarang korupsi.">
+                        <h4 class="font-bold">Hukum (Laws)</h4>
+                    </div>
                 </div>
-                <p class="text-gray-600 mt-2">Indonesia adalah <strong>"laboratorium evolusi"</strong> alami karena keunikan biogeografinya, terutama di zona Wallacea.</p>
-                <h4 class="text-xl font-semibold mt-4 mb-2">Bioma (Tipe Lingkungan Luas):</h4>
-                <p class="text-sm text-gray-600">Hutan Hujan Tropis, Padang Rumput (Stepa/Sabana), Gurun, Tundra, Taiga.</p>
+                <div id="norma-info" class="mt-4 p-4 bg-gray-100 rounded-lg text-center text-gray-700 transition-opacity duration-300 opacity-0">Pilih salah satu tingkatan di atas.</div>
+                
+                <h4 class="font-semibold text-md mt-6 mb-2 text-center">2. Berdasarkan Sumbernya</h4>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-2">
+                    <div class="p-3 bg-purple-50 rounded-lg">
+                        <h5 class="font-bold text-purple-800">Norma Agama</h5>
+                        <p class="text-xs text-purple-700">Dari ajaran Tuhan (kitab suci). Mutlak bagi pemeluknya. Contoh: Sholat, mengasihi sesama.</p>
+                    </div>
+                    <div class="p-3 bg-cyan-50 rounded-lg">
+                        <h5 class="font-bold text-cyan-800">Norma Kesusilaan</h5>
+                        <p class="text-xs text-cyan-700">Dari hati nurani (baik/buruk). Sanksi: rasa bersalah, malu. Contoh: Jujur, tidak bohong.</p>
+                    </div>
+                    <div class="p-3 bg-yellow-50 rounded-lg">
+                        <h5 class="font-bold text-yellow-800">Norma Kesopanan</h5>
+                        <p class="text-xs text-yellow-700">Dari tata pergaulan. Sanksi: cemoohan, teguran. Contoh: Bicara sopan, tidak motong pembicaraan.</p>
+                    </div>
+                    <div class="p-3 bg-red-50 rounded-lg">
+                        <h5 class="font-bold text-red-800">Norma Hukum</h5>
+                        <p class="text-xs text-red-700">Dari peraturan negara. Tegas, memaksa, sanksi pidana/perdata. Contoh: Aturan lalu lintas.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+                <div class="content-card p-6">
+                     <h3 class="font-bold text-xl mb-4">Kalau Aturan Dilanggar? Kenalan Sama Penyimpangan Sosial (Deviasi)</h3>
+                     <p class="text-sm text-gray-700 mb-2"><strong>Penyimpangan sosial (deviasi)</strong> adalah perilaku yang dianggap nggak sesuai, melanggar nilai dan norma, dan biasanya dianggap tercela.</p>
+                     <h4 class="font-semibold text-md mt-3 mb-1">Penyebab Penyimpangan:</h4>
+                     <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                        <li><strong>Sosialisasi tidak sempurna:</strong> Proses belajar nilai norma tidak baik.</li>
+                        <li><strong>Sub-kebudayaan menyimpang:</strong> Aturan kelompoknya beda dari masyarakat umum.</li>
+                        <li>Pengaruh lingkungan, masalah keluarga, tekanan media, ekonomi, perubahan sosial cepat (anomi).</li>
+                     </ul>
+                     <h4 class="font-semibold text-md mt-3 mb-1">Teori Penyimpangan (Beberapa Contoh):</h4>
+                     <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                        <li><strong>Teori Pergaulan Berbeda (Sutherland):</strong> Dipelajari dari pergaulan dengan penyimpang.</li>
+                        <li><strong>Teori Labeling (Lemert):</strong> Jadi menyimpang karena dicap negatif oleh masyarakat.</li>
+                        <li><strong>Teori Anomi (Merton):</strong> Terjadi karena ketegangan antara tujuan hidup dan cara mencapainya.</li>
+                     </ul>
+                      <h4 class="font-semibold text-md mt-3 mb-1">Jenis Penyimpangan:</h4>
+                     <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                        <li><strong>Sifat:</strong> Positif (inovatif, misal ilmuwan ide aneh tapi revolusioner), Negatif (merugikan, misal mencuri). Negatif dibagi lagi jadi Primer (sementara, misal sekali nyontek) dan Sekunder (terus-menerus, misal pecandu).</li>
+                        <li><strong>Pelaku:</strong> Individual, Kelompok, Campuran.</li>
+                     </ul>
+                </div>
+                 <div class="content-card p-6">
+                    <h3 class="font-bold text-xl mb-4 text-center">Menjaga Keteraturan: Pengendalian Sosial</h3>
+                    <p class="text-sm text-gray-700 mb-2"><strong>Pengendalian sosial (social control)</strong> adalah segala cara masyarakat untuk mengarahkan, menertibkan, atau memaksa anggotanya patuh nilai norma, serta mencegah dan mengatasi penyimpangan.</p>
+                    <h4 class="font-semibold text-md mt-3 mb-1">Sifat Pengendalian Sosial:</h4>
+                     <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                        <li><strong>Preventif:</strong> Pencegahan sebelum terjadi (pendidikan, nasihat).</li>
+                        <li><strong>Represif:</strong> Penindakan setelah terjadi (hukuman, efek jera).</li>
+                        <li><strong>Formal:</strong> Oleh lembaga resmi (sekolah, polisi, pengadilan).</li>
+                        <li><strong>Informal:</strong> Oleh masyarakat tidak resmi (keluarga, teman, gosip).</li>
+                     </ul>
+                     <h4 class="font-semibold text-md mt-3 mb-1">Cara Pengendalian Sosial:</h4>
+                     <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                        <li><strong>Persuasif:</strong> Ajakan, nasihat, tanpa paksaan.</li>
+                        <li><strong>Koersif:</strong> Paksaan, tekanan, bahkan kekerasan.</li>
+                        <li><strong>Sosialisasi:</strong> Penanaman nilai norma sejak dini.</li>
+                        <li>Lainnya: Gosip, teguran, pendidikan, agama.</li>
+                     </ul>
+                     <div class="chart-container mt-4">
+                        <canvas id="socialControlChart"></canvas>
+                     </div>
+                     <p class="text-xs text-gray-500 mt-2 italic text-center">Efektivitas pengendalian sosial tergantung seberapa aturan dan pihak pengendali dianggap sah (legitimate).</p>
+                </div>
             </div>
         </section>
 
-        <!-- ANTROPOSFER -->
-        <section id="antroposfer" class="content-section">
-            <h2 class="text-3xl font-bold mb-2">🧑‍🤝‍🧑 Antroposfer: Panggung Aksi Kita, Manusia</h2>
-            <p class="text-lg text-gray-600 mb-6">Antroposfer ("anthropos" = manusia) adalah ruang di Bumi tempat manusia hidup & beraktivitas. Kita adalah aktor utama di panggung ini, berinteraksi dengan lingkungan.</p>
-
-            <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
-                <h3 class="text-2xl font-semibold mb-4">Dinamika Penduduk: Jumlah Kita Selalu Berubah</h3>
-                <p class="text-gray-600 mb-2">Faktor utama perubahan jumlah penduduk:</p>
-                <ul class="list-disc list-inside space-y-1 text-gray-700">
-                    <li><strong>Kelahiran (Natalitas):</strong> Jumlah bayi lahir hidup.</li>
-                    <li><strong>Kematian (Mortalitas):</strong> Jumlah orang meninggal.</li>
-                    <li><strong>Migrasi (Perpindahan):</strong> Imigrasi (masuk), Emigrasi (keluar), Transmigrasi (antar pulau), Urbanisasi (desa ke kota).</li>
-                </ul>
+        <section id="modul3" class="module-section space-y-12">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-gray-800">Modul 3: Struktur Sosial: Memahami Posisi Kita</h2>
+                <p class="mt-2 text-gray-600 max-w-2xl mx-auto">Di masyarakat, kita punya posisi dan peran masing-masing. Ada yang setara, ada yang bertingkat. Susunan atau pola hubungan antar individu dan kelompok inilah yang kita sebut struktur sosial. Yuk, kita pelajari lebih lanjut biar nggak bingung lagi sama posisi kita di tengah masyarakat!</p>
             </div>
 
-            <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
-                <h3 class="text-2xl font-semibold mb-4">Potret Penduduk Indonesia</h3>
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Apa Itu Struktur Sosial? Kayak Peta di Masyarakat!</h3>
+                <p class="text-gray-700 mb-2"><strong>Struktur sosial</strong> itu ibarat denah atau kerangka gedung, ngasih bentuk dan ngatur hubungan antar bagian. Secara teknis, ini adalah pola hubungan teratur antar unsur pokok masyarakat (aturan, lembaga, kelompok, lapisan sosial).</p>
+                <h4 class="font-semibold text-md mt-3 mb-1">Ciri-ciri Struktur Sosial:</h4>
+                <ul class="list-disc list-inside text-gray-700 text-sm space-y-1">
+                    <li>Bersifat dinamis (bisa berubah).</li>
+                    <li>Punya dimensi vertikal (tingkatan) dan horizontal (perbedaan setara).</li>
+                    <li>Cakupannya luas.</li>
+                    <li>Membentuk kesatuan kelompok.</li>
+                    <li>Meliputi kebudayaan (nilai, norma).</li>
+                </ul>
+                <h4 class="font-semibold text-md mt-3 mb-1">Fungsi Struktur Sosial:</h4>
+                <ul class="list-disc list-inside text-gray-700 text-sm space-y-1">
+                    <li>Pengawas sosial.</li>
+                    <li>Ciri khas kelompok.</li>
+                    <li>Menanamkan disiplin.</li>
+                    <li>Pembagian kerja dan peran.</li>
+                </ul>
+            </div>
+            
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Status dan Peran: Kamu Sebagai Apa dan Ngapain Aja Sih?</h3>
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
-                        <h4 class="text-xl font-semibold mb-2">Komposisi Penduduk:</h4>
-                        <p class="text-gray-700 text-sm">Pengelompokan berdasarkan: Umur (muda, produktif, tua ➔ angka ketergantungan), Jenis Kelamin, Pendidikan, Pekerjaan, Agama, Suku.</p>
-                        <h4 class="text-xl font-semibold mt-4 mb-2">Kualitas Penduduk:</h4>
-                        <p class="text-gray-700 text-sm">Diukur dari: Tingkat Pendidikan, Tingkat Kesehatan (angka harapan hidup, gizi), Tingkat Pendapatan/Kesejahteraan.</p>
+                        <h4 class="font-semibold text-lg text-blue-700 mb-2">Status Sosial 🏷️</h4>
+                        <p class="text-sm text-gray-700 mb-2">Posisi atau kedudukan seseorang di masyarakat. Kayak "label" atau "jabatan".</p>
+                        <div class="p-3 bg-blue-50 rounded-lg mb-2 sub-card border-blue-500">
+                            <h5 class="font-bold text-blue-800">🎁 Ascribed Status (Bawaan)</h5>
+                            <p class="text-xs text-blue-700">Didapat otomatis sejak lahir, tanpa usaha. Contoh: Anak laki-laki/perempuan, suku bangsa, anak raja.</p>
+                        </div>
+                        <div class="p-3 bg-blue-50 rounded-lg mb-2 sub-card border-blue-500">
+                            <h5 class="font-bold text-blue-800">🏆 Achieved Status (Raihan)</h5>
+                            <p class="text-xs text-blue-700">Didapat karena usaha, kerja keras, kemampuan. Contoh: Juara kelas, ketua OSIS, dokter.</p>
+                        </div>
+                        <div class="p-3 bg-blue-50 rounded-lg sub-card border-blue-500">
+                            <h5 class="font-bold text-blue-800">🎖️ Assigned Status (Pemberian)</h5>
+                            <p class="text-xs text-blue-700">Dikasih masyarakat karena jasa/kemampuan. Contoh: Gelar pahlawan, siswa teladan.</p>
+                        </div>
                     </div>
                     <div>
-                        <h4 class="text-xl font-semibold mb-2">Persebaran & Kepadatan Penduduk:</h4>
-                        <p class="text-gray-700 text-sm mb-2"><strong>Persebaran:</strong> Tidak merata, mayoritas di Jawa (padat). Pola: Mengelompok (seperti semut & gula), Memanjang (sepanjang jalan/sungai), Menyebar (di lahan pertanian luas).</p>
-                        <p class="text-gray-700 text-sm"><strong>Kepadatan:</strong> Jumlah penduduk per km². Analogi: Kepadatan tinggi = bus penuh sesak/konser. Kepadatan rendah = lapangan bola sendirian.</p>
-                        <div class="chart-container mt-4">
-                            <canvas id="populationChart"></canvas>
+                        <h4 class="font-semibold text-lg text-green-700 mb-2">Peran Sosial (Social Role) 🎭</h4>
+                        <p class="text-sm text-gray-700 mb-2">"Job desc" atau perilaku yang diharapkan sesuai status.</p>
+                        <p class="text-sm text-gray-700 mb-2">Contoh: Status siswa, perannya belajar, ngerjain PR, patuh guru. Status anak, perannya hormat orang tua, bantu di rumah.</p>
+                        <div class="p-3 bg-green-50 rounded-lg sub-card border-green-500">
+                             <h5 class="font-bold text-green-800">Konflik Status/Peran</h5>
+                             <p class="text-xs text-green-700">Terjadi jika punya banyak status dengan tuntutan peran yang beda atau bertentangan. Contoh: Ketua OSIS (mimpin rapat) vs. Siswa (belajar buat ulangan besok). Bingung prioritasin yang mana.</p>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
-                <h3 class="text-2xl font-semibold mb-4">Manusia & Lingkungan: Sahabat atau Musuh?</h3>
-                <div class="analogy-box">
-                    <p><strong>Analogi Jejak Kaki di Pasir:</strong> Setiap tindakan kita meninggalkan jejak di alam, bisa baik (menanam pohon) atau buruk (buang sampah).</p>
-                </div>
-                <div class="grid md:grid-cols-2 gap-6 mt-4">
-                    <div class="p-4 bg-green-50 rounded-lg border border-green-200">
-                        <h4 class="font-bold text-green-700 text-lg">✅ Dampak Positif (Pahlawan Bumi):</h4>
-                        <ul class="list-disc list-inside text-sm mt-2 text-green-600 space-y-1">
-                            <li><strong>Sistem Subak di Bali:</strong> Irigasi adil & lestari (filosofi Tri Hita Karana).</li>
-                            <li><strong>Agroforestri/Tumpang Sari:</strong> Gabung tanaman hutan & pertanian, jaga kesuburan & biodiversitas.</li>
-                            <li><strong>Reboisasi:</strong> Menanam kembali hutan gundul.</li>
-                            <li><strong>Terasering (Sengkedan):</strong> Lahan bertingkat di lereng, cegah erosi.</li>
-                        </ul>
-                    </div>
-                    <div class="p-4 bg-red-50 rounded-lg border border-red-200">
-                        <h4 class="font-bold text-red-700 text-lg">❌ Dampak Negatif (Perusak):</h4>
-                        <ul class="list-disc list-inside text-sm mt-2 text-red-600 space-y-1">
-                            <li><strong>Polusi Sampah Plastik:</strong> Cemari sungai & laut, bahayakan hewan, mikroplastik.</li>
-                            <li><strong>Deforestasi & Kebakaran Hutan:</strong> Rusak habitat, banjir, longsor, kabut asap.</li>
-                            <li><strong>Pencemaran Udara:</strong> Asap kendaraan & pabrik, ganggu kesehatan.</li>
-                            <li><strong>Eksploitasi Tambang Merusak:</strong> Lubang besar, rusak tanah, cemari air.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
 
-            <div class="bg-white p-6 rounded-xl shadow-lg">
-                <h3 class="text-2xl font-semibold mb-4 text-center">Pembangunan Berkelanjutan: Keren Tanpa Ngerusak!</h3>
-                <p class="text-center text-gray-600 max-w-3xl mx-auto mb-4">
-                    Artinya: memenuhi kebutuhan sekarang tanpa mengorbankan kemampuan generasi mendatang. Keseimbangan 3 pilar: <strong>Ekonomi, Sosial, Lingkungan</strong>.
-                </p>
-                <div class="analogy-box">
-                    <p><strong>Analogi Merawat Kebun Buah atau Menjaga Kue:</strong> Nikmati hasil sekarang, tapi rawat sumbernya agar anak cucu juga bisa menikmati. Manfaatkan sumber daya secukupnya, pastikan tetap ada untuk masa depan.</p>
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Diferensiasi vs. Stratifikasi Sosial</h3>
+                <p class="text-center text-gray-600 mb-6">Struktur sosial punya dua wajah utama: perbedaan yang setara (diferensiasi) dan perbedaan yang bertingkat (stratifikasi).</p>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="p-4 bg-sky-50 rounded-lg border-2 border-sky-200">
+                        <h4 class="text-lg font-semibold text-sky-800 text-center mb-2">Diferensiasi Sosial (Horizontal ↔️)</h4>
+                        <p class="text-sm text-center text-sky-700 mb-3">Pengelompokan masyarakat secara sejajar. Ada perbedaan, tapi idealnya nggak ada yang lebih tinggi atau rendah, semua setara. Kayak macam-macam rasa es krim.</p>
+                        <h5 class="font-bold text-sm text-sky-800 mb-1">Dasar-dasar Diferensiasi:</h5>
+                        <ul class="list-disc list-inside text-xs text-sky-700 space-y-1">
+                            <li><strong>Ras:</strong> Ciri fisik (warna kulit, bentuk rambut).</li>
+                            <li><strong>Suku Bangsa (Etnis):</strong> Budaya, bahasa, adat, asal-usul. (Jawa, Sunda, Batak).</li>
+                            <li><strong>Klan (Marga):</strong> Garis keturunan (patrilineal/matrilineal).</li>
+                            <li><strong>Agama:</strong> Keyakinan dan praktik ibadah.</li>
+                            <li><strong>Jenis Kelamin (Gender):</strong> Laki-laki & perempuan (biologis & peran sosial).</li>
+                            <li><strong>Profesi (Pekerjaan):</strong> Jenis pekerjaan/keahlian (guru, dokter, petani).</li>
+                        </ul>
+                        <p class="text-xs text-sky-600 mt-3 italic">Idealnya setara, tapi kenyataannya perbedaan ini sering jadi dasar prasangka, stereotip, bahkan konflik jika tidak disikapi bijak.</p>
+                    </div>
+                     <div class="p-4 bg-purple-50 rounded-lg border-2 border-purple-200">
+                        <h4 class="text-lg font-semibold text-purple-800 text-center mb-2">Stratifikasi Sosial (Vertikal ↕️)</h4>
+                        <p class="text-sm text-center text-purple-700 mb-3">Pengelompokan masyarakat secara bertingkat-tingkat. Ada lapisan atas, tengah, bawah. Kayak podium juara atau lantai apartemen.</p>
+                        <h5 class="font-bold text-sm text-purple-800 mb-1">Dasar-dasar Stratifikasi:</h5>
+                        <ul class="list-disc list-inside text-xs text-purple-700 space-y-1">
+                            <li><strong>Kekayaan (Ekonomi):</strong> Harta, tanah, uang.</li>
+                            <li><strong>Kekuasaan (Politik):</strong> Jabatan, kemampuan mengatur.</li>
+                            <li><strong>Kehormatan:</strong> Keturunan (bangsawan), jasa.</li>
+                            <li><strong>Pendidikan (Ilmu Pengetahuan):</strong> Tingkat pendidikan, keahlian.</li>
+                        </ul>
+                        <h5 class="font-bold text-sm text-purple-800 mt-2 mb-1">Jenis Sistem Stratifikasi:</h5>
+                        <ul class="list-disc list-inside text-xs text-purple-700 space-y-1">
+                             <li><strong>Terbuka:</strong> Bisa pindah lapisan (naik/turun) karena usaha/prestasi. (Masyarakat modern).</li>
+                             <li><strong>Tertutup:</strong> Susah/tidak mungkin pindah lapisan, status dari lahir. (Sistem kasta dulu).</li>
+                             <li><strong>Campuran:</strong> Gabungan terbuka dan tertutup.</li>
+                        </ul>
+                         <p class="text-xs text-purple-600 mt-3 italic">Stratifikasi menentukan kesempatan orang mengubah nasib. Dasar-dasarnya seringkali saling terkait.</p>
+                    </div>
                 </div>
-                <p class="text-gray-600">Manusia kini jadi "kekuatan alam" dominan. Kita punya kemampuan merusak sekaligus memperbaiki. Tanggung jawab kita besar untuk bertindak bijaksana demi keberlanjutan "rumah" kita.</p>
             </div>
         </section>
 
+        <section id="modul4" class="module-section space-y-12">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-gray-800">Modul 4: Perubahan Sosial: Dunia Nggak Pernah Berhenti Bergerak!</h2>
+                <p class="mt-2 text-gray-600 max-w-2xl mx-auto">Bandingin foto ortumu zaman dulu sama gaya hidup kita sekarang, beda banget kan? Itulah perubahan sosial. Masyarakat kita nggak pernah statis, selalu bergerak dan berubah. Kenapa ya bisa gitu? Yuk, kita cari tahu bareng-bareng!</p>
+            </div>
+
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Perubahan Sosial Itu Apa Sih? Kenapa Selalu Terjadi?</h3>
+                <p class="text-gray-700 mb-2"><strong>Perubahan sosial</strong> adalah transformasi atau peralihan yang terjadi dalam struktur, fungsi, nilai, norma, dan pola perilaku masyarakat dari waktu ke waktu. Intinya, ada yang beda dari sebelumnya.</p>
+                <h4 class="font-semibold text-md mt-3 mb-1">Karakteristik Perubahan Sosial:</h4>
+                <ul class="list-disc list-inside text-gray-700 text-sm space-y-1">
+                    <li>Terjadi di setiap masyarakat.</li>
+                    <li>Ada yang dianggap lebih penting dampaknya.</li>
+                    <li>Bisa direncanakan, bisa juga nggak.</li>
+                    <li>Sering bikin kontroversi (pro dan kontra).</li>
+                    <li>Sifatnya berkelanjutan, memicu perubahan lain.</li>
+                </ul>
+                 <p class="text-sm text-gray-700 mt-2 italic">Di zaman teknologi ngebut, perubahan sosial juga makin cepat!</p>
+            </div>
+
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Bentuk-Bentuk Perubahan Sosial</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="p-4 bg-yellow-50 rounded-lg">
+                        <h4 class="font-semibold text-yellow-800 mb-1">Berdasarkan Waktu/Kecepatan:</h4>
+                        <ul class="list-disc list-inside text-xs text-yellow-700 space-y-1">
+                            <li><strong>Evolusi (Lambat):</strong> Pelan-pelan, butuh waktu lama, nggak terlalu dirasain. Contoh: Perubahan dari masyarakat berburu ke pertanian.</li>
+                            <li><strong>Revolusi (Cepat):</strong> Cepat, drastis, ngubah dasar-dasar. Contoh: Revolusi Industri, Kemerdekaan Indonesia.</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-green-50 rounded-lg">
+                        <h4 class="font-semibold text-green-800 mb-1">Berdasarkan Perencanaan:</h4>
+                        <ul class="list-disc list-inside text-xs text-green-700 space-y-1">
+                            <li><strong>Direncanakan (Planned):</strong> Sengaja dirancang. Contoh: Program KB, pembangunan jalan tol.</li>
+                            <li><strong>Tidak Direncanakan (Unplanned):</strong> Terjadi di luar dugaan. Contoh: Dampak bencana alam, tren fashion baru.</li>
+                        </ul>
+                    </div>
+                    <div class="p-4 bg-blue-50 rounded-lg">
+                        <h4 class="font-semibold text-blue-800 mb-1">Berdasarkan Pengaruh/Dampak:</h4>
+                        <ul class="list-disc list-inside text-xs text-blue-700 space-y-1">
+                            <li><strong>Kecil:</strong> Pengaruh nggak luas, nggak ngubah struktur dasar. Contoh: Tren model rambut.</li>
+                            <li><strong>Besar:</strong> Pengaruh luas, ngubah sendi kehidupan. Contoh: Industrialisasi, perkembangan internet.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+                <div class="content-card p-6">
+                    <h3 class="font-bold text-xl mb-4 text-center">Faktor Penyebab Perubahan</h3>
+                    <h4 class="font-semibold text-md text-red-700 mb-1">Internal (Dari Dalam Masyarakat):</h4>
+                     <ul class="list-disc list-inside space-y-1 text-sm text-gray-700">
+                        <li><strong>Dinamika Demografi:</strong> Perubahan jumlah & komposisi penduduk (kelahiran, kematian, migrasi).</li>
+                        <li><strong>Penemuan Baru (Inovasi):</strong>
+                            <ul class="list-circle list-inside ml-4 text-xs">
+                                <li><em>Discovery:</em> Penemuan sesuatu yang sudah ada tapi baru diketahui.</li>
+                                <li><em>Invention:</em> Penciptaan sesuatu yang benar-benar baru.</li>
+                                <li><em>Innovation:</em> Pengembangan lebih lanjut dari discovery/invention.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Konflik dalam Masyarakat:</strong> Pertentangan antar kelompok.</li>
+                        <li><strong>Pemberontakan atau Revolusi.</strong></li>
+                     </ul>
+                     <h4 class="font-semibold text-md text-indigo-700 mt-3 mb-1">Eksternal (Dari Luar Masyarakat):</h4>
+                     <ul class="list-disc list-inside space-y-1 text-sm text-gray-700">
+                        <li><strong>Perubahan Lingkungan Alam Fisik:</strong> Bencana alam, perubahan iklim.</li>
+                        <li><strong>Peperangan.</strong></li>
+                        <li><strong>Pengaruh Kebudayaan Masyarakat Lain:</strong> Lewat perdagangan, media, internet (misal K-Pop).</li>
+                     </ul>
+                </div>
+                 <div class="content-card p-6">
+                    <h3 class="font-bold text-xl mb-4 text-center">Faktor Penghambat Perubahan</h3>
+                     <ul class="list-disc list-inside space-y-1 text-sm text-gray-700">
+                         <li>Kurangnya hubungan dengan masyarakat lain (isolasi).</li>
+                         <li>Perkembangan IPTEK yang terlambat.</li>
+                         <li>Sikap masyarakat yang sangat tradisional.</li>
+                         <li>Adanya kepentingan yang sudah mapan (vested interests) yang takut terganggu.</li>
+                         <li>Rasa takut akan kegoyahan integrasi kebudayaan.</li>
+                         <li>Prasangka terhadap hal-hal baru atau asing.</li>
+                         <li>Hambatan ideologis.</li>
+                         <li>Adat atau kebiasaan yang sulit diubah.</li>
+                     </ul>
+                </div>
+            </div>
+            
+             <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Kecepatan Perubahan Sosial (Evolusi vs Revolusi)</h3>
+                <p class="text-center text-gray-600 mb-6">Perubahan sosial bisa terjadi sangat lambat seperti kura-kura (Evolusi), atau sangat cepat dan mendasar seperti kilat (Revolusi).</p>
+                <div class="chart-container">
+                    <canvas id="socialChangeChart"></canvas>
+                </div>
+            </div>
+
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Dampak Perubahan Sosial: Positif & Negatif</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-semibold text-green-700 mb-1">Dampak Positif 👍</h4>
+                        <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                            <li>Modernisasi dan kemajuan IPTEK.</li>
+                            <li>Peningkatan kualitas hidup (pendidikan, kesehatan).</li>
+                            <li>Terciptanya lapangan kerja baru.</li>
+                            <li>Peningkatan efektivitas dan efisiensi kerja.</li>
+                            <li>Berkembangnya nilai & norma baru yang relevan.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-red-700 mb-1">Dampak Negatif 👎</h4>
+                        <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                            <li><strong>Cultural Shock (Gegar Budaya):</strong> Kaget, bingung hadapi budaya baru.</li>
+                            <li><strong>Cultural Lag (Kesenjangan Budaya):</strong> Teknologi maju, tapi cara pikir/etika ketinggalan (misal: punya smartphone canggih tapi gampang percaya hoax).</li>
+                            <li><strong>Disorganisasi Sosial:</strong> Nilai lama pudar, nilai baru belum kuat, masyarakat bingung.</li>
+                            <li>Kesenjangan sosial & ekonomi makin lebar.</li>
+                            <li>Munculnya konflik sosial.</li>
+                            <li>Individualisme makin kuat.</li>
+                            <li>Kerusakan lingkungan.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+             <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Teori-Teori Perubahan Sosial</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="p-3 bg-gray-100 rounded-lg">
+                        <h4 class="font-semibold text-gray-800">Teori Linear (Evolusi)</h4>
+                        <p class="text-xs text-gray-700">Perubahan maju lurus dari sederhana ke kompleks/modern, bertahap.</p>
+                    </div>
+                    <div class="p-3 bg-gray-100 rounded-lg">
+                        <h4 class="font-semibold text-gray-800">Teori Siklus</h4>
+                        <p class="text-xs text-gray-700">Perubahan kayak roda berputar, bisa berulang polanya, naik turun.</p>
+                    </div>
+                    <div class="p-3 bg-gray-100 rounded-lg">
+                        <h4 class="font-semibold text-gray-800">Teori Fungsional</h4>
+                        <p class="text-xs text-gray-700">Masyarakat kayak organisme, perubahan di satu bagian ngaruh ke lain, sistem cari keseimbangan baru.</p>
+                    </div>
+                    <div class="p-3 bg-gray-100 rounded-lg">
+                        <h4 class="font-semibold text-gray-800">Teori Konflik</h4>
+                        <p class="text-xs text-gray-700">Masyarakat itu arena pertentangan kepentingan, perubahan terjadi karena konflik ini.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="modul5" class="module-section space-y-12">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-gray-800">Modul 5: Masyarakat Multikultural: Warna-Warni Indonesia!</h2>
+                <p class="mt-2 text-gray-600 max-w-2xl mx-auto">Indonesia itu seperti gado-gado raksasa! Ratusan suku, bahasa, dan agama hidup bersama. Inilah yang disebut masyarakat multikultural. Masyarakat yang punya banyak budaya ini juga punya tantangan dan keindahannya sendiri. Yuk, kita pelajari kekayaan dan tantangannya!</p>
+            </div>
+            
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Masyarakat Multikultural Itu Apa Sih?</h3>
+                <p class="text-gray-700 mb-2">Secara sederhana, <strong>masyarakat multikultural</strong> adalah masyarakat yang terdiri dari berbagai kelompok sosial dengan sistem nilai, norma, dan kebudayaan yang berbeda-beda, tapi mereka hidup berdampingan dalam satu kesatuan wilayah atau politik. Kata "multi" artinya banyak, "kultural" artinya budaya.</p>
+                <p class="text-gray-700">Konsep penting di baliknya adalah <strong>multikulturalisme</strong>, yaitu paham yang mengakui dan menghargai adanya perbedaan dalam kesederajatan. Semua budaya dianggap setara, nggak ada yang lebih tinggi atau rendah.</p>
+            </div>
+
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Ciri-Ciri Masyarakat Multikultural</h3>
+                <ul class="list-disc list-inside text-gray-700 text-sm space-y-1">
+                    <li>Terjadinya segmentasi ke dalam kelompok-kelompok sosial (berdasarkan suku, agama, ras).</li>
+                    <li>Struktur sosial terbagi ke lembaga-lembaga yang non-komplementer (jalan sendiri-sendiri).</li>
+                    <li>Kurang mengembangkan konsensus nilai-nilai dasar.</li>
+                    <li>Relatif sering terjadi konflik jika tidak dikelola baik.</li>
+                    <li>Integrasi sosial bisa tumbuh karena paksaan atau saling ketergantungan ekonomi.</li>
+                    <li>Kadang ada dominasi politik oleh suatu kelompok.</li>
+                </ul>
+            </div>
+
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Penyebab Keberagaman di Indonesia</h3>
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex items-start gap-4 p-3 bg-lime-50 rounded-lg">
+                        <div class="text-3xl pt-1">🏝️</div>
+                        <div>
+                            <h4 class="font-semibold text-lime-800">Kondisi Geografis</h4>
+                            <p class="text-sm text-lime-700">Negara kepulauan, tiap daerah mengembangkan budayanya sendiri sesuai lingkungan. Isolasi geografis masa lalu juga berperan.</p>
+                        </div>
+                    </div>
+                     <div class="flex items-start gap-4 p-3 bg-cyan-50 rounded-lg">
+                        <div class="text-3xl pt-1">🚢</div>
+                        <div>
+                            <h4 class="font-semibold text-cyan-800">Letak Strategis & Pengaruh Budaya Asing</h4>
+                            <p class="text-sm text-cyan-700">Jalur perdagangan dunia, membawa pengaruh budaya asing (India, Tiongkok, Arab, Eropa) dan agama-agama besar.</p>
+                        </div>
+                    </div>
+                     <div class="flex items-start gap-4 p-3 bg-amber-50 rounded-lg">
+                        <div class="text-3xl pt-1">☀️</div>
+                        <div>
+                            <h4 class="font-semibold text-amber-800">Perbedaan Iklim & Struktur Tanah</h4>
+                            <p class="text-sm text-amber-700">Membentuk mata pencaharian dan kebiasaan yang berbeda, yang ujungnya membentuk budaya beda.</p>
+                        </div>
+                    </div>
+                      <div class="flex items-start gap-4 p-3 bg-rose-50 rounded-lg">
+                        <div class="text-3xl pt-1">📜</div>
+                        <div>
+                            <h4 class="font-semibold text-rose-800">Sejarah Bangsa</h4>
+                            <p class="text-sm text-rose-700">Interaksi antar kerajaan kuno, masa penjajahan, hingga kemerdekaan memperkaya budaya melalui interaksi, perkawinan, dan perpindahan penduduk.</p>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+
+            <div class="content-card p-6">
+                 <h3 class="font-bold text-xl mb-4 text-center">Tantangan dalam Keberagaman (Masalah yang Bisa Muncul)</h3>
+                 <p class="text-center text-gray-600 mb-6">Perbedaan bisa menjadi sumber masalah jika tidak disikapi dengan bijak. Waspadai hal-hal berikut!</p>
+                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
+                    <div class="p-3 bg-yellow-100 rounded-lg">
+                        <h4 class="font-semibold text-yellow-800">Prasangka (Prejudice)</h4>
+                        <p class="text-xs">Sikap negatif tanpa bukti, berdasarkan anggapan umum.</p>
+                    </div>
+                     <div class="p-3 bg-yellow-100 rounded-lg">
+                        <h4 class="font-semibold text-yellow-800">Stereotip (Stereotype)</h4>
+                        <p class="text-xs">Cap atau label kaku dan disederhanakan tentang suatu kelompok.</p>
+                    </div>
+                     <div class="p-3 bg-yellow-100 rounded-lg">
+                        <h4 class="font-semibold text-yellow-800">Etnosentrisme</h4>
+                        <p class="text-xs">Menganggap budaya sendiri paling hebat, meremehkan yang lain.</p>
+                    </div>
+                     <div class="p-3 bg-yellow-100 rounded-lg">
+                        <h4 class="font-semibold text-yellow-800">Rasisme</h4>
+                        <p class="text-xs">Merasa ras sendiri lebih unggul, bisa berujung diskriminasi.</p>
+                    </div>
+                     <div class="p-3 bg-yellow-100 rounded-lg">
+                        <h4 class="font-semibold text-yellow-800">Diskriminasi</h4>
+                        <p class="text-xs">Perlakuan tidak adil karena perbedaan suku, agama, ras, dll.</p>
+                    </div>
+                     <div class="p-3 bg-yellow-100 rounded-lg">
+                        <h4 class="font-semibold text-yellow-800">Konflik Sosial</h4>
+                        <p class="text-xs">Benturan antar kelompok karena perbedaan kepentingan, nilai, dll.</p>
+                    </div>
+                 </div>
+            </div>
+            <div class="content-card p-6">
+                <h3 class="font-bold text-xl mb-4 text-center">Biar Akur Terus: Upaya Mewujudkan Harmoni & Integrasi Sosial</h3>
+                <p class="text-center text-gray-600 mb-6">Keberagaman jadi kekuatan jika kita semua berusaha menjaga harmoni dan persatuan.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="p-3 bg-emerald-50 rounded-lg">
+                        <h4 class="font-semibold text-emerald-800">Toleransi</h4>
+                        <p class="text-xs text-emerald-700">Sikap mau menerima dan menghargai perbedaan.</p>
+                    </div>
+                    <div class="p-3 bg-emerald-50 rounded-lg">
+                        <h4 class="font-semibold text-emerald-800">Empati</h4>
+                        <p class="text-xs text-emerald-700">Mampu merasakan dan mengerti perasaan orang lain.</p>
+                    </div>
+                    <div class="p-3 bg-emerald-50 rounded-lg">
+                        <h4 class="font-semibold text-emerald-800">Dialog Antarbudaya</h4>
+                        <p class="text-xs text-emerald-700">Ngobrol terbuka untuk kurangi salah paham.</p>
+                    </div>
+                    <div class="p-3 bg-emerald-50 rounded-lg">
+                        <h4 class="font-semibold text-emerald-800">Pendidikan Multikultural</h4>
+                        <p class="text-xs text-emerald-700">Belajar memahami dan menghargai keberagaman.</p>
+                    </div>
+                    <div class="p-3 bg-emerald-50 rounded-lg">
+                        <h4 class="font-semibold text-emerald-800">Kebijakan Inklusif</h4>
+                        <p class="text-xs text-emerald-700">Aturan yang adil untuk semua kelompok dari pemerintah.</p>
+                    </div>
+                    <div class="p-3 bg-emerald-50 rounded-lg">
+                        <h4 class="font-semibold text-emerald-800">Menghargai HAM</h4>
+                        <p class="text-xs text-emerald-700">Semua orang punya hak untuk diperlakukan adil.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <footer class="text-center p-6 mt-12 bg-gray-800 text-white">
-        <p>Dibuat untuk pembelajaran Geografi Kelas 10. Teruslah menjadi agen perubahan untuk Bumi!</p>
-        <p class="text-xs mt-1">Versi Konten Diperkaya</p>
+    <footer class="text-center py-6 border-t border-gray-200 mt-12 bg-white">
+        <p class="text-gray-500 text-sm">Web Aplikasi Belajar Sosiologi | Materi Lengkap Kelas 10 | © 2024</p>
     </footer>
-
-    <div id="modal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-lg shadow-xl p-6 max-w-lg w-full relative max-h-[80vh] overflow-y-auto">
-            <button onclick="closeModal()" class="absolute top-3 right-4 text-3xl font-bold text-gray-500 hover:text-gray-700">&times;</button>
-            <h3 id="modal-title" class="text-2xl font-bold mb-4 text-gray-800"></h3>
-            <div id="modal-content" class="text-gray-700 space-y-2"></div>
-        </div>
-    </div>
-
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const sections = document.querySelectorAll('.content-section');
+            const navButtons = document.querySelectorAll('.nav-button');
+            const modules = document.querySelectorAll('.module-section');
+            const welcomeSection = document.getElementById('welcome');
+            let activeModuleId = null;
+            let socialControlChartInstance = null;
+            let socialChangeChartInstance = null;
             
-            window.showSection = (id) => {
-                sections.forEach(section => {
-                    section.classList.remove('active');
+            function showModule(targetId) {
+                if (activeModuleId === targetId && welcomeSection.style.display === 'none') return;
+
+                welcomeSection.style.display = 'none';
+                modules.forEach(module => {
+                    if (module.id === targetId) {
+                        module.style.display = 'block';
+                        activeModuleId = module.id;
+                    } else {
+                        module.style.display = 'none';
+                    }
                 });
-                const activeSection = document.getElementById(id);
-                if (activeSection) {
-                    activeSection.classList.add('active');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                } else {
-                    document.getElementById('home').classList.add('active');
-                }
-
-                if (id === 'antroposfer' && !populationChartInstance) {
-                    renderPopulationChart();
-                }
-            };
-            
-            const rockInfoData = {
-                magma: { title: 'Magma', text: 'Batuan cair pijar super panas dari dalam perut Bumi. Ini adalah "bahan dasar" atau "telur" dari semua batuan. Jika mendingin dan membeku, akan menjadi batuan beku.' },
-                beku: { title: 'Batuan Beku', text: 'Terbentuk ketika magma mendingin dan membeku (mengkristal). Seperti "ulat" dalam siklus. Contoh: Batu granit (beku di dalam, kristal besar), batu basal (beku di permukaan, sering jadi tiang), dan batu apung (ringan, berongga, beku cepat di permukaan).' },
-                sedimen: { title: 'Batuan Sedimen', text: 'Terbentuk dari serpihan batuan lain (pelapukan & erosi), sisa organisme, atau pengendapan kimia. Serpihan ini (sedimen) diangkut, diendapkan, lalu mengeras (litifikasi). Seperti "kepompong". Contoh: Batu pasir (dari pasir), batu gamping (dari cangkang hewan laut), batu bara (dari sisa tumbuhan).' },
-                metamorf: { title: 'Batuan Metamorf (Malihan)', text: 'Terbentuk ketika batuan beku atau sedimen "dimasak" lagi dengan suhu dan tekanan super tinggi di dalam Bumi (tapi tidak sampai meleleh). Seperti "kupu-kupu" hasil metamorfosis. Contoh: Batu marmer (dari batu gamping), batu sabak (dari serpih).' }
-            };
-
-            window.showRockInfo = (type) => {
-                const info = rockInfoData[type];
-                const infoBox = document.getElementById('rock-info');
-                if (info) {
-                    infoBox.innerHTML = `
-                        <h4 class="font-bold text-lg mb-2 text-gray-800">${info.title}</h4>
-                        <p class="text-sm text-gray-700">${info.text}</p>
-                    `;
-                }
-            };
-
-            const soilHorizons = document.querySelectorAll('.soil-horizon');
-            const soilInfoDisplay = document.getElementById('soil-info-display');
-            soilHorizons.forEach(horizon => {
-                const displayInfo = () => {
-                    soilInfoDisplay.innerHTML = `<p class="text-sm">${horizon.dataset.info}</p>`;
-                };
-                horizon.addEventListener('mouseenter', displayInfo);
-                horizon.addEventListener('click', displayInfo); // For touch devices
-            });
-
-            const atmosInfoDisplay = document.getElementById('atmos-info-display');
-            window.showAtmosInfo = (text) => {
-                atmosInfoDisplay.innerHTML = `<p class="text-sm">${text}</p>`
-            };
-            
-            const hidroTitle = document.getElementById('hidro-title');
-            const hidroDesc = document.getElementById('hidro-desc');
-            window.showHidroInfo = (title, description) => {
-                hidroTitle.textContent = title;
-                hidroDesc.textContent = description;
+                updateActiveButton(targetId);
+                initializeCharts(targetId);
             }
 
-            const mapZones = document.querySelectorAll('#indonesia-map .zone');
-            const faunaInfoDisplay = document.getElementById('fauna-info-display');
-            mapZones.forEach(zone => {
-                zone.addEventListener('mouseenter', () => {
-                    faunaInfoDisplay.innerHTML = `<p class="font-semibold text-sm">${zone.dataset.fauna}</p>`;
-                });
-            });
-
-            const modal = document.getElementById('modal');
-            const modalTitle = document.getElementById('modal-title');
-            const modalContent = document.getElementById('modal-content');
-            
-            window.openModal = (title, contentHTML) => {
-                 modalTitle.textContent = title;
-                 modalContent.innerHTML = contentHTML; // Use innerHTML for HTML content
-                 modal.classList.remove('hidden');
-                 modal.classList.add('flex');
-            }
-            window.closeModal = () => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }
-            
-            // Close modal on escape key
-            document.addEventListener('keydown', (event) => {
-                if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
-                    closeModal();
-                }
-            });
-
-            // Close modal on outside click
-            modal.addEventListener('click', (event) => {
-                if (event.target === modal) {
-                    closeModal();
-                }
-            });
-            
-            let populationChartInstance = null;
-            function renderPopulationChart() {
-                if (populationChartInstance) {
-                    populationChartInstance.destroy();
-                }
-                const ctx = document.getElementById('populationChart').getContext('2d');
-                populationChartInstance = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Jawa', 'Sumatera', 'Kalimantan', 'Sulawesi', 'Papua & Maluku'],
-                        datasets: [{
-                            label: 'Estimasi Kepadatan Penduduk (jiwa/km²)',
-                            data: [1117, 158, 40, 105, 15], // Updated data for better representation
-                            backgroundColor: [
-                                'rgba(239, 68, 68, 0.7)',  // Red
-                                'rgba(59, 130, 246, 0.7)', // Blue
-                                'rgba(16, 185, 129, 0.7)', // Green
-                                'rgba(249, 115, 22, 0.7)', // Orange
-                                'rgba(139, 92, 246, 0.7)'  // Purple
-                            ],
-                            borderColor: [
-                                'rgba(239, 68, 68, 1)',
-                                'rgba(59, 130, 246, 1)',
-                                'rgba(16, 185, 129, 1)',
-                                'rgba(249, 115, 22, 1)',
-                                'rgba(139, 92, 246, 1)'
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            title: {
-                                display: true,
-                                text: 'Perbandingan Kepadatan Penduduk Antar Pulau (Estimasi)',
-                                font: { size: 14 }
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        let label = context.dataset.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        if (context.parsed.y !== null) {
-                                            label += context.parsed.y + ' jiwa/km²';
-                                        }
-                                        return label;
-                                    }
-                                }
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: 'Kepadatan (jiwa/km²)'
-                                }
-                            },
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Pulau/Kelompok Pulau'
-                                }
-                            }
-                        }
+            function updateActiveButton(targetId) {
+                navButtons.forEach(button => {
+                    if (button.dataset.target === targetId) {
+                        button.classList.add('active');
+                    } else {
+                        button.classList.remove('active');
                     }
                 });
             }
+
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.dataset.target;
+                    showModule(targetId);
+                     // Scroll to top of module for better UX on mobile
+                    const targetElement = document.getElementById(targetId);
+                    if(targetElement) {
+                        // Small delay to allow content to render before scrolling
+                        setTimeout(() => {
+                             targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 100);
+                    }
+                });
+            });
+
+            const pyramidLevels = document.querySelectorAll('.pyramid-level');
+            const normaInfoBox = document.getElementById('norma-info');
+            pyramidLevels.forEach(level => {
+                level.addEventListener('click', () => {
+                    normaInfoBox.textContent = level.dataset.info;
+                    normaInfoBox.style.opacity = 1;
+                    pyramidLevels.forEach(l => {
+                        l.style.transform = 'scale(1)';
+                        l.style.fontWeight = 'normal';
+                    });
+                    level.style.transform = 'scale(1.03)';
+                    level.style.fontWeight = 'bold';
+                });
+            });
+
+            function initializeCharts(moduleId) {
+                if (moduleId === 'modul2') {
+                    const socialControlCanvas = document.getElementById('socialControlChart');
+                    if (socialControlCanvas) {
+                        if (socialControlChartInstance) socialControlChartInstance.destroy();
+                        const ctx = socialControlCanvas.getContext('2d');
+                        socialControlChartInstance = new Chart(ctx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['Persuasif (Ajakan)', 'Koersif (Paksaan)', 'Pendidikan & Sosialisasi', 'Agama', 'Gosip & Teguran'],
+                                datasets: [{
+                                    label: 'Metode Pengendalian Sosial (%)',
+                                    data: [35, 20, 25, 10, 10],
+                                    backgroundColor: ['#34D399', '#F87171', '#60A5FA', '#FBBF24', '#A78BFA'],
+                                    hoverOffset: 8,
+                                    borderColor: '#FFFFFF',
+                                    borderWidth: 2
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            padding: 15,
+                                            font: { size: 10 }
+                                        }
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: 'Perkiraan Efektivitas Metode Pengendalian Sosial',
+                                        font: { size: 14, weight: 'bold' },
+                                        padding: { top: 5, bottom: 15 }
+                                    },
+                                    tooltip: {
+                                        callbacks: {
+                                            label: function(context) {
+                                                let label = context.label || '';
+                                                if (label) {
+                                                    label += ': ';
+                                                }
+                                                if (context.parsed !== null) {
+                                                    label += context.parsed + '%';
+                                                }
+                                                return label;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+                
+                if (moduleId === 'modul4') {
+                     const socialChangeCanvas = document.getElementById('socialChangeChart');
+                     if (socialChangeCanvas) {
+                        if (socialChangeChartInstance) socialChangeChartInstance.destroy();
+                        const ctx2 = socialChangeCanvas.getContext('2d');
+                        socialChangeChartInstance = new Chart(ctx2, {
+                            type: 'line',
+                            data: {
+                                labels: ['Periode 1', 'Periode 2', 'Periode 3', 'Periode 4', 'Periode 5', 'Periode 6'],
+                                datasets: [
+                                    {
+                                        label: 'Evolusi (Lambat & Bertahap)',
+                                        data: [10, 12, 15, 17, 20, 22],
+                                        borderColor: '#60A5FA',
+                                        backgroundColor: 'rgba(96, 165, 250, 0.1)',
+                                        tension: 0.4,
+                                        fill: true,
+                                        pointRadius: 4,
+                                        pointHoverRadius: 6
+                                    },
+                                    {
+                                        label: 'Revolusi (Cepat & Drastis)',
+                                        data: [10, 11, 11, 50, 52, 53], /* Data diubah sedikit untuk menunjukkan lompatan drastis */
+                                        borderColor: '#F87171',
+                                        backgroundColor: 'rgba(248, 113, 113, 0.1)',
+                                        tension: 0.1, /* Lebih kaku untuk menunjukkan perubahan cepat */
+                                        fill: true,
+                                        stepped: false, /* Dihilangkan agar lebih terlihat sebagai lonjakan */
+                                        pointRadius: 4,
+                                        pointHoverRadius: 6
+                                    }
+                                ]
+                            },
+                             options: {
+                                 responsive: true,
+                                 maintainAspectRatio: false,
+                                 scales: {
+                                     y: {
+                                         beginAtZero: true,
+                                         title: {
+                                             display: true,
+                                             text: 'Tingkat Perubahan Kumulatif'
+                                         }
+                                     },
+                                     x: {
+                                         title: {
+                                             display: true,
+                                             text: 'Waktu'
+                                         }
+                                     }
+                                 },
+                                 plugins: {
+                                     tooltip: {
+                                         mode: 'index',
+                                         intersect: false
+                                     },
+                                     legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            padding: 15
+                                        }
+                                     },
+                                     title: {
+                                        display: true,
+                                        text: 'Visualisasi Kecepatan Perubahan Sosial',
+                                        font: { size: 14, weight: 'bold' },
+                                        padding: { top: 5, bottom: 15 }
+                                     }
+                                 },
+                                 interaction: {
+                                    mode: 'nearest',
+                                    axis: 'x',
+                                    intersect: false
+                                 }
+                             }
+                         });
+                     }
+                }
+            }
             
-            // Initialize with home section active
-            showSection('home');
+            // Show Modul 1 by default, or welcome screen if no specific module is targeted.
+            // For this setup, let's default to Modul 1 if a user lands directly.
+            // If you want welcome first, then remove the next line and handle initial state differently.
+            showModule('modul1'); 
+
         });
     </script>
 
